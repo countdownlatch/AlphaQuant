@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load pagination_tags %}
+
+{% block cssfile %}
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .policy_list_info {
+            margin: 0 auto;
+            margin-top: 20px;
+            width: 80%;
+            min-height: 400px;
+            height: auto;
+            background-color: white;
+            border: 1px solid grey;
+        }
+
+        .policy_list_top {
+            margin: 0 auto;
+            margin-top: 20px;
+            width: 95%;
+        }
+        .policy_list_content{
+             margin: 0 auto;
+            margin-top: 20px;
+            width: 95%;
+        }
+
+        .btn {
+            margin-left: 10px;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container ">
+        <div class="policy_list_info">
+            <div class="policy_list_top ">
+                <span style="font-size: 20px;">策略列表</span>
+                <a href="{% url 'createPolicy' %}">
+                    <button type="button" class="btn btn-primary ">新建策略</button>
+                </a>
+
+                <button type="button" class="btn btn-default disabled ">删除</button>
+               <a href="{% url 'community' 1 %}"> <button type="button" class="btn btn-link pull-right">策略库&gt;&gt;</button></a>
+
+            </div>
+            <div class="policy_list_content " >
+                <table class="table table-hover">
+                    <thead>
+                    <tr >
+                        <th><input type="checkbox" id="selectAll"></th>
+                        <th>名称</th>
+                        <th>最后修改时间</th>
+                        <th>历史回测</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% autopaginate polist_list  10 %}
+                    {% for policy in polist_list %}
+                        <tr id="li{{ policy.id }}">
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td><a href="../policy/?id={{ policy.uuid }}">{{ policy.name }}</a></td>
+                            <td>{{ policy.update_time |date:'Y-m-d H:i:s' }}</td>
+                            <td>0</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% paginate %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+    <script>
+        {% if newPolicy %}
+            document.location = '/policy?id=' + "{{ newPolicy.uuid  }}";
+        {% endif %}
+    </script>
+{% endblock %}
