@@ -2,14 +2,6 @@
  * Created by Jerome on 2016/5/11.
  */
 
-var editor = ace.edit("policy_editor");
-editor.setTheme("ace/theme/twilight");
-editor.getSession().setMode("ace/mode/python");
-
-var log_info = ace.edit('policy_ace_log_error')
-log_info.setTheme("ace/theme/twilight");
-log_info.setReadOnly(true);
-
 $(function () {
     $('.datetimepicker').datetimepicker({
         language: 'zh-CN',
@@ -27,7 +19,7 @@ $(function () {
 });
 
 $(document).ready(function () {
-
+    
     var policy_id = $("#policy_id").val();
     $("#saveBtn").click(function () {
         var content = editor.getValue();

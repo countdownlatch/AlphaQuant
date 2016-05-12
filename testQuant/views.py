@@ -10,7 +10,7 @@ import uuid
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'backtest.html')
 
 def showPolicy_list(request):
     if request.user.is_authenticated():
