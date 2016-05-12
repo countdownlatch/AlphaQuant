@@ -6,7 +6,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from models import *
 from django.contrib.auth import authenticate,login,logout
 import uuid
-
 # Create your views here.
 
 
@@ -37,7 +36,8 @@ def createPolicy(request):
     name = '这是一个简单的策略'
     policy = Policy(uuid=p_uuid,author_id=author,name=name)
     policy.save()
-    return render(request, 'policy_list.html',{'newPolicy':policy})
+    #return render(request, 'policy_list.html',{'newPolicy':policy})
+    return HttpResponseRedirect('/policy?id='+(str)(policy.uuid))
 
 def savePolicy(request):
     if  request.method == 'POST':
@@ -64,23 +64,27 @@ def buildPolicy(request):
         user_id = request.user.userprofile.id
         newTask = Task(uuid=t_uuid,parameter=parameter, taskType=taskType, status=status,policy_id=policy_id,user_id=user_id)
         newTask.save()
-    return HttpResponse()
+        task_id = newTask.id
+        return HttpResponse(task_id)
+    else:
+        return HttpResponse("build error")
 
+
+# 获取结果集
 def getPolicyResult(request):
-    if request.method == 'POST':
-        task_id = request.POST.get('taskId')
-        offset = request.POST.get('offset')
-        currentResult = Current_result.objects.filter(task_id=task_id,offset = offset)
-        if len(currentResult) > 0:
-            result = getChartResult(task_id,offset)
-            currentLog = Log.objects.filter(task_id=task_id,offset=offset)
-            if len(currentLog) > 0:
-                result['log'] = getLogResult(task_id, offset)
-            else:
-                result['log'] = ""
-            return JsonResponse(result)
+    task_id = request.POST.get('taskId')
+    offset = request.POST.get('offset')
+    currentResult = Current_result.objects.filter(task_id=task_id,offset = offset)
+    if len(currentResult) > 0:
+        result = getChartResult(task_id,offset)
+        currentLog = Log.objects.filter(task_id=task_id,offset=offset)
+        if len(currentLog) > 0:
+            result['log'] = getLogResult(task_id, offset)
         else:
-            return HttpResponse('not exist')
+            result['log'] = ""
+        return JsonResponse(result)
+    else:
+        return HttpResponse('not exist')
 
 def getChartResult(task_id,offset):
     time = []

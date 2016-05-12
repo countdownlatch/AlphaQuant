@@ -86,7 +86,9 @@ $(document).ready(function () {
         });
     });
 
+
 });
+
 
 var time = [];
 var stock_price = [];
@@ -94,15 +96,15 @@ var b = [];
 var c = [];
 var log = [];
 
-function getPolicyResult(taskId, offset) {
+function getPolicyResult(taskId,offset){
     $.ajax({
         type: "POST",
         url: "/getPolicyResult/",
         data: {
-            taskId: taskId,
-            offset: offset,
+            taskId:taskId,
+            offset:offset,
         },
-        success: function (result) {
+        success:function(result) {
             if (result == 'not exist') {
                 setTimeout(function () {
                     getPolicyResult(taskId, offset)
@@ -120,7 +122,7 @@ function getPolicyResult(taskId, offset) {
                     getPolicyResult(taskId, offset)
                 } else {
 
-                    $('#Right-Charts').highcharts({                   //图表展示容器，与div的id保持一致
+                    $('#policy_result_chart').highcharts({                   //图表展示容器，与div的id保持一致
                         chart: {
                             type: 'line'                         //指定图表的类型，默认是折线图（line）
                         },
@@ -151,7 +153,8 @@ function getPolicyResult(taskId, offset) {
                              data: a
                              }*/]
                     });
-                    $('#log_info').html((String)(log));
+                    alert(log)
+                    $('#policy_log').html((String)(log));
                     $.ajax({
                         type: "POST",
                         url: "/getResultInfo/",
@@ -167,7 +170,7 @@ function getPolicyResult(taskId, offset) {
                             $("#maxdown").text(resultInfo.maxdown);
 
                         },
-                        error: function (jqXHR) {
+                        error: function(jqXHR){
                             alert("发生错误：" + jqXHR.status);
                         },
 
@@ -181,5 +184,4 @@ function getPolicyResult(taskId, offset) {
     });
 
 }
-
 
