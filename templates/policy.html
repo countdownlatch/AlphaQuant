@@ -71,6 +71,7 @@
         }
 
     </style>
+
 {% endblock %}
 
 {% block content %}
@@ -118,11 +119,11 @@ def onBars(self, bars):
 
         if price > 1.01*sma:
             self.marketOrder(self.instrument,shares*-1)
-            print 'SELL %i'%shares
+            self.info('SELL %i'%shares)
         if price < 0.9*sma:
             sharesToBuy=int(self.getBroker().getCash()/price)
             self.marketOrder(self.instrument, sharesToBuy)
-            print 'BUY %d'%shares
+            self.info('BUY %d'%shares)
                      {% endif %}
                 </div>
 
@@ -153,7 +154,7 @@ def onBars(self, bars):
 
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-primary pull-right policy_btn" type="button">运行回测</button>
+                        <button id="loopbackBtn" class="btn btn-primary pull-right policy_btn" type="button">运行回测</button>
                     </div>
                 </div>
                 <div id="policy_right_result" class="row policy_solid">
@@ -206,7 +207,6 @@ def onBars(self, bars):
     <script type="text/javascript" src="/static/plugin/ace/ace.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/plugin/ace/theme-monokai.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/plugin/ace/mode-python.js" charset="utf-8"></script>
-{#    <script src="https://ace.c9.io/build/src/ace.js" type="text/javascript" charset="utf-8"></script>#}
     <script type="text/javascript" src="/static/bootstrap//js/bootstrap-datetimepicker.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/highcharts.js"></script>

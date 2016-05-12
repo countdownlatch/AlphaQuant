@@ -1,6 +1,15 @@
 /**
  * Created by Jerome on 2016/5/11.
  */
+var editor = ace.edit("policy_editor");
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/python");
+
+var log_info = ace.edit('policy_ace_log_error')
+log_info.setTheme("ace/theme/monokai");
+log_info.setReadOnly(true);
+    //log_info.resize();
+
 
 $(function () {
     $('.datetimepicker').datetimepicker({
@@ -79,6 +88,48 @@ $(document).ready(function () {
     });
 
 
+    $("#loopbackBtn").click(function(){
+             time = [];
+             stock_price = [];
+             b = [];
+             c = [];
+             var company = $("#company").val();
+             var beginTime = $("#beginTime").val();
+             var endTime = $("#endTime").val();
+             var money = $("#money").val();
+             var rate = $("#rate").val();
+             if(company == ""){
+                 alert("公司不能为空");
+                 return;
+             }
+             if(money == '') {
+                 alert("启动资金不能为空");
+                 return;
+             }
+
+            var parameter = company+','+beginTime+','+endTime+','+money+','+rate;
+            $.ajax({
+                type: "POST",
+                url: "/buildPolicy/",
+                data: {
+                    policy_id:policy_id,
+                    parameter:parameter,
+                },
+                dataType: "json",
+                success: function(task_id){
+                    window.location.href='../backtestPolicy/?task_id='+task_id;
+                },
+                error: function(jqXHR){
+                   alert("发生错误：" + jqXHR.status);
+                },
+            });
+
+        });
+
+
+
+
+
 });
 
 
@@ -145,7 +196,6 @@ function getPolicyResult(taskId,offset){
                              data: a
                              }*/]
                     });
-                    alert(log)
                     $('#policy_log').html((String)(log));
                     $.ajax({
                         type: "POST",

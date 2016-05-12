@@ -36,5 +36,8 @@ urlpatterns = [
     url(r'policy/$',alphaquant_views.showPolicy, name='policy'),
     url(r'savePolicy/$', alphaquant_views.savePolicy, name='savePolicy'),
     url(r'buildPolicy/$', alphaquant_views.buildPolicy, name='buildPolicy'),
-    url(r'getPolicyResult/$',alphaquant_views.getPolicyResult, name='getPolicyResult',)
+    url(r'getPolicyResult/$',alphaquant_views.getPolicyResult, name='getPolicyResult',),
+    url(r'^backtestPolicy/$', alphaquant_views.backtestPolicy,name='backtestPolicy'),
+    url(r'^getResultInfo/$', alphaquant_views.getResultInfo, name='getResultInfo'),
+    url(r'^getBacktestInfo/$', alphaquant_views.getBacktestInfo,name='getBacktestInfo'),
 ]

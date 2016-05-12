@@ -10,7 +10,7 @@ import uuid
 
 
 def index(request):
-    return render(request, 'backtest.html')
+    return render(request, 'index.html')
 
 def showPolicy_list(request):
     if request.user.is_authenticated():
@@ -77,11 +77,11 @@ def getPolicyResult(request):
     currentResult = Current_result.objects.filter(task_id=task_id,offset = offset)
     if len(currentResult) > 0:
         result = getChartResult(task_id,offset)
-        currentLog = Log.objects.filter(task_id=task_id,offset=offset)
+        currentLog = Log.objects.filter(offset = (offset),task_id = task_id)
         if len(currentLog) > 0:
             result['log'] = getLogResult(task_id, offset)
         else:
-            result['log'] = ""
+           result['log'] = ""
         return JsonResponse(result)
     else:
         return HttpResponse('not exist')
@@ -117,6 +117,7 @@ def getLogResult(task_id,offset):
 # 获取策略结果信息
 def getResultInfo(request):
     task_id = request.POST.get('taskId')
+    print task_id
     result = Result.objects.get(task_id=task_id)
     strategy_return = result.strategy_return
     basic_return = result.basic_return
@@ -130,10 +131,19 @@ def getResultInfo(request):
 
 
 def backtestPolicy(request):
-    pass
+    #task_id = request.GET.values
+    task_id = request.build_absolute_uri().split("?task_id=")[1]
+    print task_id
+    return render(request, 'backtest.html', {'task_id': task_id})
 
 def getBacktestInfo(request):
-    pass
+    task_id = request.POST.get('taskId')
+    task = Task.objects.get(id=task_id)
+    parameter = task.parameter.split(',')
+    policy_name = task.policy.name
+    task = {'company': parameter[0], 'beginTime': parameter[1], 'endTime': parameter[2], 'money': parameter[3],
+            "rate": parameter[4],"policy_name":policy_name}
+    return JsonResponse(task)
 
 def community(request,category_id):
     article = Article.objects.filter(category_id = category_id)

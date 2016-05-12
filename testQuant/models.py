@@ -92,7 +92,7 @@ class Current_result(models.Model):
 # 日志表
 class Log(models.Model):
     task = models.ForeignKey("Task")
-    offtesset = models.IntegerField()
+    offset = models.IntegerField()
     content = models.TextField()
     finish_flag = models.IntegerField()
 
