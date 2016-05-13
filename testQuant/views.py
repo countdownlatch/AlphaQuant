@@ -124,7 +124,7 @@ def getChartResult(task_id,offset):
 # 获取日志信息
 def getLogResult(task_id,offset):
     log = Log.objects.get(task_id = task_id,offset = offset)
-    content = log.content
+    content = log.content[1:-1]
     return(content)
 
 # 获取策略结果信息

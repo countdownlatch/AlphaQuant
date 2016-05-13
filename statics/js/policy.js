@@ -137,7 +137,7 @@ var time = [];
 var stock_price = [];
 var b = [];
 var c = [];
-var log = [];
+var log = []
 
 function getPolicyResult(taskId,offset){
     $.ajax({
@@ -196,7 +196,14 @@ function getPolicyResult(taskId,offset){
                              data: a
                              }*/]
                     });
-                    $('#policy_log').html((String)(log));
+                    log = (String)(log);
+
+                    log = log.split(",");
+                    var str = '';
+                    for (var i = 0; i < log.length;i++){
+                        str = str+log[i]+"<br>";
+                    }
+                    $('#policy_log').html((str));
                     $.ajax({
                         type: "POST",
                         url: "/getResultInfo/",
