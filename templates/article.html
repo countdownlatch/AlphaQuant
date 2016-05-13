@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ article.title }}
+    {{ article.title }}
+{% endblock %}
+
+{% block cssfile %}
+    <style>
+        .right_userinfo{
+            margin-top: 50px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -10,7 +18,8 @@
             <div class="col-md-9">
                 <h2>{{ article.title }}</h2>
                 <hr class="featurette-divider">
-                {{ article.author }} {{ article.publish_date|date:'Y-m-d H:i' }}   回复{{ article.comment_set.select_related.count }}
+                {{ article.author }} {{ article.publish_date|date:'Y-m-d H:i' }}
+                回复{{ article.comment_set.select_related.count }}
                 {% ifequal article.author.user request.user %}
                     <a href="{% url 'edit_article' article.id %}">编辑</a>
                 {% endifequal %}
@@ -20,21 +29,33 @@
                 <hr class="featurette-divider">
                 <br>
                 {% for comment in comments_list %}
-                    {{ comment.user}}   {{ comment.date|date:'Y-m-d H:i' }}
+                    {{ comment.user }}   {{ comment.date|date:'Y-m-d H:i' }}
                     <br><br>
-                    {{ comment.content | safe}}
+                    {{ comment.content | safe }}
                     <hr>
                 {% endfor %}
                 <hr class="featurette-divider">
-               <form action="{% url 'new_comment' article.id %}" method="POST"  enctype="multipart/form-data">
-{#                 {% csrf_token %}#}
-                <textarea id = 'comment_editor' name="comment_content" class="form-control" rows="3"></textarea>
-                <br>
-                <button type="submit" class="btn btn-primary pull-right">发表评论</button>
-               </form>
+                <form action="{% url 'new_comment' article.id %}" method="POST" enctype="multipart/form-data">
+                    {#                 {% csrf_token %}#}
+                    <textarea id='comment_editor' name="comment_content" class="form-control" rows="3"></textarea>
+                    <br>
+                    <button type="submit" class="btn btn-primary pull-right">发表评论</button>
+                </form>
             </div>
             <div class="col-md-3">
+                <div class="panel panel-default right_userinfo">
+                    <div class="panel-body">
+                        <p class="text-center">
+                            <img src="/static/head-image/default-head.jpg" alt="head-img" width="130px" height="130px"
+                                 class="img-circle">
+                        </p>
+                        <p class="text-center"><b class="text-warning">{{ request.user.userprofile.name }}</b></p>
+                        <p class="text-center text-muted">{{ request.user.userprofile.resume }}</p>
 
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>

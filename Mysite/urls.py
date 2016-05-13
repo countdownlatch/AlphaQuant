@@ -30,6 +30,9 @@ urlpatterns = [
     url(r'^logout/$', alphaquant_views.account_logout, name='logout'),
     url(r'^login/$', alphaquant_views.account_login, name='login'),
     url(r'^regist/$', alphaquant_views.account_regist, name='regist'),
+    url(r'^account/$', alphaquant_views.account_info, name='account'),
+    url(r'^upload_head_img/$', alphaquant_views.upload_head_img, name='upload_head_img'),
+
 
     url(r'^policy_list/', alphaquant_views.showPolicy_list, name='policy_list'),
     url(r'^createPolicy/$', alphaquant_views.createPolicy, name='createPolicy'),

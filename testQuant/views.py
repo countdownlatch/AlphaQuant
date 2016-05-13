@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from models import *
 from django.contrib.auth import authenticate,login,logout
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from PIL import Image
 import uuid
 # Create your views here.
 
@@ -16,8 +17,8 @@ def index(request):
 def showPolicy_list(request):
     if request.user.is_authenticated():
         author = request.user.userprofile.id
-        #policy_list = Policy.objects.filter(author_id=author)
-        policy_list = Policy.objects.all()
+        policy_list = Policy.objects.filter(author_id=author)
+        #django 自带的分页，已替换为django-pagination来实现
         # paginator = Paginator(policy_list, 10)
         # page = request.GET.get('page')
         # try:
@@ -28,7 +29,6 @@ def showPolicy_list(request):
         # except EmptyPage:
         #     # If page is out of range (e.g. 9999), deliver last page of results.
         #     policy_list = paginator.page(paginator.num_pages)
-
         return render(request, 'policy_list.html',{'polist_list':policy_list})
     else:
         return HttpResponseRedirect('/login/')
@@ -276,4 +276,22 @@ def account_regist(request):
             return HttpResponseRedirect('/login')
         else:
             return render(request,'regist.html')
+
+
+def account_info(request):
+    print  request.user
+    return render(request,'account.html')
+
+def upload_head_img(request):
+    # try:
+    #     reqfile = request.FILES['picfile']  # picfile要和html里面一致
+    #     img = Image.open(reqfile)
+    #     img.thumbnail((130, 130), Image.ANTIALIAS)  # 对图片进行等比缩放
+    #     print request.user
+    #     img_name = request.user
+    #     img.save("/static/head-image/", "png")  # 保存图片
+    #
+    # except Exception, e:
+    #     return HttpResponse("Error %s" % e)  # 异常，查看报错信息
+    pass
 

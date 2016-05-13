@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block cssfile %}
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .account_info {
+            margin: 0 auto;
+            margin-top: 20px;
+            width: 80%;
+            min-height: 400px;
+            height: auto;
+            background-color: white;
+            border: 1px solid grey;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="account_info">
+
+
+            <div class="avatar" id="crop-avatar">
+                <a class="thumbnail avatar-view" id="image-container" data-original-title="">
+                    <img src="/static/head-image/default.jpg" alt="head-img" width="100px" height="100px">
+                </a>
+                <form action="{% url 'upload_head_img'%}" enctype="multipart/form-data" method="post">
+                    <input type="file" name="picfile" >
+                    <button value="上传图片" type="submit">上传图片</button>
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}

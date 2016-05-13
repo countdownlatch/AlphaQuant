@@ -118,7 +118,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=32)
     wechat = models.CharField(max_length=255,null=True,blank=True)
-
+    resume = models.CharField(max_length=255,default="这个家伙很懒，什么都没留下")
    # friends = models.ManyToManyField("self",blank=True)
    # online = models.BooleanField(default=False)
 

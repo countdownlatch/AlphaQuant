@@ -55,7 +55,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">个人账号 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">{{ request.user.userprofile.name }}</a></li>
+                            <li><a href="{% url 'account' %}">{{ request.user.userprofile.name }}</a></li>
                             <li><a href="#">消息</a></li>
                             <li><a href="#">账号设置</a></li>
                             <li role="separator" class="divider"></li>
