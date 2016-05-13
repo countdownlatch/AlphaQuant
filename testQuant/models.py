@@ -15,7 +15,7 @@ class Article(models.Model):
     priority = models.IntegerField(u'优先级',default=1000)
     author = models.ForeignKey("UserProfile")
     content = models.TextField(u'内容')
-    view_count = models.ImageField(u'浏览数',default=0)
+    view_count = models.IntegerField(u'浏览数',default=0)
    #  breif = models.TextField(max_length=512,default='none.....')
     hidden = models.BooleanField(default=False)
    # head_img = models.ImageField(upload_to="upload/bbs_summary/")

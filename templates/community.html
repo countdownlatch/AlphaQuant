@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="arctile-info">
-                        作者：{{ article.author }} 回复{{ article.comment_set.select_related.count }}
+                        作者：{{ article.author }} &nbsp;回复{{ article.comment_set.select_related.count }}&nbsp;浏览{{ article.view_count}}
                         日期{{ article.publish_date|date:'Y-m-d H:i' }}
                     </div>
                 </div>

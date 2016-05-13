@@ -167,6 +167,8 @@ def article_detail(request,article_id):
     try:
         article = Article.objects.get( id = article_id)
         comments_list = Comment.objects.filter(article_id = article_id)
+        article.view_count += 1  #设置浏览量
+        article.save()
     except ObjectDoesNotExist as e:
         return render(request,'404.html',{'err_msg':u'文章不存在'})
     return render(request,'article.html',{
