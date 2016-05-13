@@ -160,8 +160,8 @@ def getBacktestInfo(request):
 
 def community(request,category_id):
     article = Article.objects.filter(category_id = category_id).order_by('-publish_date')
-    print article
-    return render(request,'community.html',{'articles': article})
+    category = Category.objects.all().order_by('id')
+    return render(request,'community.html',{'articles': article,  'category_list': category,})
 
 def article_detail(request,article_id):
     try:
@@ -195,7 +195,7 @@ def  new_article(request):
                 newArticle = Article(category_id=category,title=title,author_id=author,content=content)
                 newArticle.save()
                 return render(request, 'new_article.html', {'newArticle': newArticle})
-        category = Category.objects.all()
+        category = Category.objects.all().order_by('id')
         return render(request,'new_article.html',{'category_list':category})
     else:
         return HttpResponseRedirect('/login/')
@@ -283,6 +283,9 @@ def account_regist(request):
 def account_info(request):
     print  request.user
     return render(request,'account.html')
+
+def user_account_info(request,user_id):
+    return render(request, 'account.html')
 
 def upload_head_img(request):
     # try:

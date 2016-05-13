@@ -24,7 +24,7 @@
                     <a href="{% url 'edit_article' article.id %}">编辑</a>
                 {% endifequal %}
                 <hr class="featurette-divider">
-                {{ crsf_token }}
+
                 {{ article.content | safe }}
                 <hr class="featurette-divider">
                 <br>
