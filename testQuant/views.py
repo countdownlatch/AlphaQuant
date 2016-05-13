@@ -17,7 +17,7 @@ def index(request):
 def showPolicy_list(request):
     if request.user.is_authenticated():
         author = request.user.userprofile.id
-        policy_list = Policy.objects.filter(author_id=author)
+        policy_list = Policy.objects.filter(author_id=author).order_by('-update_time')
         #django 自带的分页，已替换为django-pagination来实现
         # paginator = Paginator(policy_list, 10)
         # page = request.GET.get('page')
@@ -159,8 +159,8 @@ def getBacktestInfo(request):
     return JsonResponse(task)
 
 def community(request,category_id):
-    article = Article.objects.filter(category_id = category_id).order_by('-id')
-    print(len(article))
+    article = Article.objects.filter(category_id = category_id).order_by('-publish_date')
+    print article
     return render(request,'community.html',{'articles': article})
 
 def article_detail(request,article_id):
