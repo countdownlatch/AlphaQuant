@@ -3,7 +3,7 @@
 {% block cssfile %}
     <link href="/static/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <style>
-        body{
+        body {
             background-color: #f5f5f5;
         }
 
@@ -16,39 +16,39 @@
         }
 
         #policy_content {
-            height: 570px;
+            height: 577px;
         }
 
         #policy_left_top {
             height: 40px;
         }
 
-         #policy_editor {
-            height: 527px;
+        #policy_editor {
+            height: 535px;
         }
 
-        #policy_right_top{
+        #policy_right_top {
             height: 36px;
         }
 
-        #policy_right_result{
+        #policy_right_result {
             height: 360px;
         }
 
-        #policy_result_info{
+        #policy_result_info {
             height: 55px;
         }
 
-        #policy_result_chart{
+        #policy_result_chart {
             height: 305px;
         }
 
-        #policy_log_error{
-            height: 170px;
+        #policy_log_error {
+            height: 180px;
         }
 
-        #policy_ace_log_error{
-            height: 125px;
+        #policy_ace_log_error {
+            height: 136px;
         }
 
         .policy_input {
@@ -81,7 +81,7 @@
                 <span class="glyphicon glyphicon-menu-left " aria-hidden="true" style=" margin-top:2px;"></span>
                 <input type="text" id="policyTitle" name="title" class="policy_input2" value="{{ policy.name }}"/>
                 <input type="hidden" id="policy_uuid" value="{{ policy.uuid }}"/>
-                 <input type="hidden" id="policy_id" value="{{ policy.id }}"/>
+                <input type="hidden" id="policy_id" value="{{ policy.id }}"/>
             </div>
             <div class="col-md-6">
                 <button class="btn pull-right policy_btn" type="button">策略</button>
@@ -98,33 +98,33 @@
                 </div>
 
 
-                <div class="row policy_solid" id="policy_editor">{% if policy.content %}{{ policy.content }}{% else  %}
-args=[14,5]
+                <div class="row policy_solid" id="policy_editor">{% if policy.content %}{{ policy.content }}{% else %}
+                    args=[14,5]
 
-def initialize(self):
+                    def initialize(self):
 
-        self.__rsi = rsi.RSI(self.feed[self.instrument].getCloseDataSeries(),self.args[0])
-        self.__sma = ma.SMA(self.__rsi, self.args[1])
+                    self.__rsi = rsi.RSI(self.feed[self.instrument].getCloseDataSeries(),self.args[0])
+                    self.__sma = ma.SMA(self.__rsi, self.args[1])
 
 
 
-def onBars(self, bars):
+                    def onBars(self, bars):
 
-        sma= self.__sma[-1]
-        if sma is None:
-            return
+                    sma= self.__sma[-1]
+                    if sma is None:
+                    return
 
-        price = bars[self.instrument].getClose()
-        shares=self.getBroker().getShares(self.instrument)
+                    price = bars[self.instrument].getClose()
+                    shares=self.getBroker().getShares(self.instrument)
 
-        if price > 1.01*sma:
-            self.marketOrder(self.instrument,shares*-1)
-            self.info('SELL %i'%shares)
-        if price < 0.9*sma:
-            sharesToBuy=int(self.getBroker().getCash()/price)
-            self.marketOrder(self.instrument, sharesToBuy)
-            self.info('BUY %d'%shares)
-                     {% endif %}
+                    if price > 1.01*sma:
+                    self.marketOrder(self.instrument,shares*-1)
+                    self.info('SELL %i'%shares)
+                    if price < 0.9*sma:
+                    sharesToBuy=int(self.getBroker().getCash()/price)
+                    self.marketOrder(self.instrument, sharesToBuy)
+                    self.info('BUY %d'%shares)
+                {% endif %}
                 </div>
 
             </div>
@@ -133,59 +133,64 @@ def onBars(self, bars):
                     <div class="col-md-10">
                         <form class="form-inline">
                             <div class="form-group">
-                                <input type="text" id="company" class="policy_input form-control " style="width: 70px" value="orcl"/>
+                                <input type="text" id="company" class="policy_input form-control " style="width: 70px"
+                                       value="orcl"/>
 
-                                <input type='text' id="beginTime" class="form-control policy_input datetimepicker" style="width: 85px"
+                                <input type='text' id="beginTime" class="form-control policy_input datetimepicker"
+                                       style="width: 85px"
                                        readonly value="2012-02-01"/>
                                 到
-                                <input type='text' id="endTime" class=" form-control policy_input datetimepicker" style="width: 85px"
+                                <input type='text' id="endTime" class=" form-control policy_input datetimepicker"
+                                       style="width: 85px"
                                        readonly value="2016-02-01"/>
 
-                                    &#165;
-                                    <input type="text" id="money" class="form-control policy_input"  style="width: 70px" value="30000"/>
+                                &#165;
+                                <input type="text" id="money" class="form-control policy_input" style="width: 70px"
+                                       value="30000"/>
 
-                                    <select id='rate' class="form-control policy_input ">
-                                        <option value="day" selected="selected">每天</option>
-                                        <option value="minute">分钟</option>
-                                    </select>
+                                <select id='rate' class="form-control policy_input ">
+                                    <option value="day" selected="selected">每天</option>
+                                    <option value="minute">分钟</option>
+                                </select>
                             </div>
                         </form>
 
 
                     </div>
                     <div class="col-md-2">
-                        <button id="loopbackBtn" class="btn btn-primary pull-right policy_btn" type="button">运行回测</button>
+                        <button id="loopbackBtn" class="btn btn-primary pull-right policy_btn" type="button">运行回测
+                        </button>
                     </div>
                 </div>
                 <div id="policy_right_result" class="row policy_solid">
                     <div class="col-md-12">
-                        <div id="policy_result_info" class="row" >
-                           <table class="table-condensed"  >
-                    <tr>
-                        <th>策略收益</th>
-                        <th>基准收益</th>
-                        <th>Alpha</th>
-                        <th>Beta</th>
-                        <th>Sharpe</th>
-                        <th>最大回撤</th>
-                    </tr>
-                    <tr>
-                        <td id="strategy_return">--</td>
-                        <td id="basic_return">--</td>
-                        <td id="alpha">--</td>
-                        <td id="beta">--</td>
-                        <td id="sharp">--</td>
-                        <td id="maxdown">--</td>
-                    </tr>
-                </table>
+                        <div id="policy_result_info" class="row">
+                            <table class="table-condensed">
+                                <tr>
+                                    <th>策略收益</th>
+                                    <th>基准收益</th>
+                                    <th>Alpha</th>
+                                    <th>Beta</th>
+                                    <th>Sharpe</th>
+                                    <th>最大回撤</th>
+                                </tr>
+                                <tr>
+                                    <td id="strategy_return">--</td>
+                                    <td id="basic_return">--</td>
+                                    <td id="alpha">--</td>
+                                    <td id="beta">--</td>
+                                    <td id="sharp">--</td>
+                                    <td id="maxdown">--</td>
+                                </tr>
+                            </table>
                         </div>
                         <div id="policy_result_chart" class="row policy_solid">
 
                         </div>
                     </div>
                 </div>
-                <div id = 'policy_log_error'class="row policy_solid">
-                   <ul class="nav nav-tabs" id="nav-tabs">
+                <div id='policy_log_error' class="row policy_solid">
+                    <ul class="nav nav-tabs" id="nav-tabs">
                         <li class="active">
                             <a id="daily-logs-link" href="#" data-toggle="tab">日志</a>
                         </li>
@@ -208,8 +213,20 @@ def onBars(self, bars):
     <script type="text/javascript" src="/static/plugin/ace/theme-monokai.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/plugin/ace/mode-python.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/bootstrap//js/bootstrap-datetimepicker.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"
+            charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/highcharts.js"></script>
     <script type="text/javascript" src="/static/js/policy.js" charset="utf-8"></script>
+    <script>
 
+{#        解决高分辨率下显示的问题#}
+        var height = $(window).height();
+        if (height > 667) {
+            $("#policy_content").css("height", height - 90)
+            $("#policy_editor").css("height", height - 132)
+            $("#policy_right_result").css("height", height - 307)
+            $("#policy_result_chart").css("height", height - 362)
+        }
+
+    </script>
 {% endblock %}
