@@ -4,8 +4,7 @@ def get_page(self):
     integer representing the current page.
     """
     try:
-        #return int(self.REQUEST['page'])
-         return int(self.POST['page']) #@zjj
+        return int(self.GET['page'])
     except (KeyError, ValueError, TypeError):
         return 1
 

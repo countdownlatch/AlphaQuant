@@ -5,6 +5,7 @@ from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from models import *
 from django.contrib.auth import authenticate,login,logout
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import uuid
 # Create your views here.
 
@@ -15,8 +16,20 @@ def index(request):
 def showPolicy_list(request):
     if request.user.is_authenticated():
         author = request.user.userprofile.id
-        policy_list = Policy.objects.filter(author_id=author)
-        return render(request, 'policy_list.html',{'polist_list':policy_list,})
+        #policy_list = Policy.objects.filter(author_id=author)
+        policy_list = Policy.objects.all()
+        # paginator = Paginator(policy_list, 10)
+        # page = request.GET.get('page')
+        # try:
+        #     policy_list = paginator.page(page)
+        # except PageNotAnInteger:
+        #     # If page is not an integer, deliver first page.
+        #     policy_list = paginator.page(1)
+        # except EmptyPage:
+        #     # If page is out of range (e.g. 9999), deliver last page of results.
+        #     policy_list = paginator.page(paginator.num_pages)
+
+        return render(request, 'policy_list.html',{'polist_list':policy_list})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -146,7 +159,7 @@ def getBacktestInfo(request):
     return JsonResponse(task)
 
 def community(request,category_id):
-    article = Article.objects.filter(category_id = category_id)
+    article = Article.objects.filter(category_id = category_id).order_by('-id')
     print(len(article))
     return render(request,'community.html',{'articles': article})
 
@@ -219,14 +232,14 @@ def account_login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/community/1')
             else:
                 err_msg = '用户名或密码错误'
         return render(request, 'login.html', {'err_msg': err_msg})
 
 def account_logout(request):
     logout(request)  # 自带的logout方法
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/login/')
 
 def account_regist(request):
     if request.user.is_authenticated():
