@@ -5,7 +5,7 @@ var editor = ace.edit("policy_editor");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/python");
 
-var log_info = ace.edit('policy_ace_log_error')
+var log_info = ace.edit('policy_log')
 log_info.setTheme("ace/theme/monokai");
 log_info.setReadOnly(true);
     //log_info.resize();
