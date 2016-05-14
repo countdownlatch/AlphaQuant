@@ -4,27 +4,29 @@
     <link href="/static/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f5f5f5;
+            background-color: #f2f2f2;
         }
 
         .policy_solid {
-            border: 1px solid grey;
+            border: 1px solid #d3d3d3;
         }
 
         #policy_top {
-            height: 40px;
+            height: 50px;
+            border-bottom: 0;
         }
 
         #policy_content {
-            height: 577px;
+            height: 567px;
+            border-top: 1px solid #AAAAAA;
         }
 
         #policy_left_top {
-            height: 40px;
+            height: 36px;
         }
 
         #policy_editor {
-            height: 535px;
+            height: 530px;
         }
 
         #policy_right_top {
@@ -32,6 +34,7 @@
         }
 
         #policy_right_result {
+            background-color: white;
             height: 360px;
         }
 
@@ -44,12 +47,12 @@
         }
 
         #policy_log_error {
-            height: 180px;
+            height: 170px;
         }
 
         #policy_ace_log_error {
-            height: 136px;
-            overflow:auto
+            height: 126px;
+            overflow: auto
         }
 
         .policy_input {
@@ -62,14 +65,30 @@
         .policy_input2 {
             height: 27px;
             width: 30%;
-            margin-top: 2px;
+            margin-top: 10px;
             margin-left: 2px;
+            background-color: #f2f2f2;
+            border: none
         }
 
         .policy_btn {
             height: 30px;
             margin-top: 2px;
         }
+
+        .defaut_info {
+            line-height: 28px;
+            padding: 60px 0 0 60px;
+            color: gray;
+            font-size: 18px;
+            opacity: .8;
+        }
+
+        .default-font{
+            font-size: 14px;
+            font-family: 微软雅黑;
+        }
+
 
     </style>
 
@@ -78,13 +97,17 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row policy_solid" id="policy_top">
-            <div class="col-md-6">
-                <span class="glyphicon glyphicon-menu-left " aria-hidden="true" style=" margin-top:2px;"></span>
-                <input type="text" id="policyTitle" name="title" class="policy_input2" value="{{ policy.name }}"/>
+            <div class="col-md-8">
+                <a href="{% url 'policy_list' %}"><span class="glyphicon glyphicon-menu-left " aria-hidden="true"
+                                                     style=" margin-top:2px;"></span></a>
+                <input type="text" id="policyTitle" name="title" class="policy_input2 default-font"   value="{{ policy.name }}"/>
                 <input type="hidden" id="policy_uuid" value="{{ policy.uuid }}"/>
                 <input type="hidden" id="policy_id" value="{{ policy.id }}"/>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4" style=" margin-top: 10px;">
+                  <a href="{% url 'community' 1 %}">
+                    <button type="button" class="btn btn-link " >策略库</button>
+                </a>
                 <button class="btn pull-right policy_btn" type="button">策略</button>
                 <button class="btn pull-right policy_btn" type="button">回测</button>
             </div>
@@ -97,7 +120,6 @@
                         <button class="btn policy_btn" id='buildBtn' type="button">编译运行</button>
                     </div>
                 </div>
-
 
                 <div class="row policy_solid" id="policy_editor">{% if policy.content %}{{ policy.content }}{% else %}args=[14,5]
 
@@ -124,7 +146,8 @@ def onBars(self, bars):
             sharesToBuy=int(self.getBroker().getCash()/price)
             self.marketOrder(self.instrument, sharesToBuy)
             self.info('BUY %d'%shares)
-                {% endif %}
+
+                    {% endif %}
                 </div>
 
             </div>
@@ -139,7 +162,7 @@ def onBars(self, bars):
                                 <input type='text' id="beginTime" class="form-control policy_input datetimepicker"
                                        style="width: 85px"
                                        readonly value="2012-02-01"/>
-                                到
+                               到
                                 <input type='text' id="endTime" class=" form-control policy_input datetimepicker"
                                        style="width: 85px"
                                        readonly value="2016-02-01"/>
@@ -165,7 +188,7 @@ def onBars(self, bars):
                 <div id="policy_right_result" class="row policy_solid">
                     <div class="col-md-12">
                         <div id="policy_result_info" class="row">
-                            <table class="table-condensed">
+                            <table class="table-condensed default-fontx">
                                 <tr>
                                     <th>策略收益</th>
                                     <th>基准收益</th>
@@ -185,7 +208,10 @@ def onBars(self, bars):
                             </table>
                         </div>
                         <div id="policy_result_chart" class="row policy_solid">
-
+                            <div class="defaut_info">
+                                <span>点击”编译运行"进行快速回测</span>
+                                <span>或者 点击"运行回测"进行详细的回测</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,7 +225,7 @@ def onBars(self, bars):
                         </li>
                     </ul>
                     <div id="policy_ace_log_error">
-                        <div id="policy_log" ></div>
+                        <div id="policy_log"></div>
                         <div id="policy_error" style="display:none"></div>
                     </div>
                 </div>
@@ -209,9 +235,9 @@ def onBars(self, bars):
 {% endblock %}
 
 {% block jsfile %}
-    <script type="text/javascript" src="/static/plugin/ace/ace.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/plugin/ace/theme-monokai.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/plugin/ace/mode-python.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/plugin/ace-builds/src/ace.js" charset="utf-8"></script>
+    {% comment %}<script type="text/javascript" src="/static/plugin/ace/theme-monokai.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/plugin/ace/mode-python.js" charset="utf-8"></script>{% endcomment %}
     <script type="text/javascript" src="/static/bootstrap//js/bootstrap-datetimepicker.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"
             charset="utf-8"></script>
@@ -219,11 +245,11 @@ def onBars(self, bars):
     <script type="text/javascript" src="/static/js/policy.js" charset="utf-8"></script>
     <script>
 
-{#        解决高分辨率下显示的问题#}
+        {#        解决高分辨率下显示的问题#}
         var height = $(window).height();
         if (height > 667) {
-            $("#policy_content").css("height", height - 90)
-            $("#policy_editor").css("height", height - 132)
+            $("#policy_content").css("height", height - 100)
+            $("#policy_editor").css("height", height - 137)
             $("#policy_right_result").css("height", height - 307)
             $("#policy_result_chart").css("height", height - 362)
         }
