@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load pagination_tags %}
 {% block title %}
     {{ article.title }}
 {% endblock %}
@@ -28,12 +28,14 @@
                 {{ article.content | safe }}
                 <hr class="featurette-divider">
                 <br>
+                {% autopaginate comments_list 10 %}
                 {% for comment in comments_list %}
                     {{ comment.user }}   {{ comment.date|date:'Y-m-d H:i' }}
                     <br><br>
                     {{ comment.content | safe }}
                     <hr>
                 {% endfor %}
+             {% paginate %}
                 <hr class="featurette-divider">
                 <form action="{% url 'new_comment' article.id %}" method="POST" enctype="multipart/form-data">
                     {#                 {% csrf_token %}#}
