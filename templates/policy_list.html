@@ -47,14 +47,14 @@
                     <button type="button" class="btn btn-primary ">新建策略</button>
                 </a>
 
-                <button type="button" class="btn btn-default disabled ">删除</button>
+                <button type="button" class="btn btn-default " id="deletePolicy">删除</button>
                 <a href="{% url 'community' 1 %}">
                     <button type="button" class="btn btn-link pull-right">策略库&gt;&gt;</button>
                 </a>
 
             </div>
             <div class="policy_list_content ">
-                 {% autopaginate polist_list 10 %}
+                {% autopaginate polist_list 10 %}
 
                 <table class="table table-hover">
                     <thead>
@@ -72,7 +72,7 @@
 
                             <tr id="li{{ policy.id }}">
                                 <td>
-                                    <input type="checkbox">
+                                    <input type="checkbox" name="checkbox" value='{{ policy.id }}'>
                                 </td>
                                 <td><a href="../policy/?id={{ policy.uuid }}">{{ policy.name }}</a></td>
                                 <td>{{ policy.update_time |date:'Y-m-d H:i:s' }}</td>
@@ -83,25 +83,45 @@
 
                     </tbody>
                 </table>
-                         {% paginate %}
 
-{#                <div class="pagination">#}
-{#						<span class="step-links">#}
-{#							{% if polist_list.has_previous %}#}
-{#                                <a href="?page={{ polist_list.previous_page_number }}">prev</a>#}
-{#                            {% else %}#}
-{#                                <span class='empty'></span>#}
-{#                            {% endif %}#}
-{#                            <span class="current">#}
-{#								Page {{ polist_list.number }} of {{ polist_list.paginator.num_pages }}#}
-{#							</span>#}
-{#                            {% if polist_list.has_next %}#}
-{#                                <a href="?page={{ polist_list.next_page_number }}">next</a>#}
-{#                            {% else %}#}
-{#                                <span class='empty'></span>#}
-{#                            {% endif %}#}
-{#						</span>#}
-{#                </div>#}
+                {#                <form name="form1" method="post" action="">#}
+                {#                    <input type="checkbox" id="all" name="all">#}
+                {#                    <input type="button" id="btn1" value="全选">#}
+                {#                    <input type="button" id="btn2" value="取消全选">#}
+                {#                    <input type="button" id="btn3" value="选中所有奇数">#}
+                {#                    <input type="button" id="btn4" value="反选">#}
+                {#                    <input type="button" id="btn5" value="获得选中的所有值">#}
+                {#                    <br/>#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox1">checkbox1#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox2">checkbox2#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox3">checkbox3#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox4">checkbox4#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox5">checkbox5#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox6">checkbox6#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox7">checkbox7#}
+                {#                    <input type="checkbox" name="checkbox" value="checkbox8">checkbox8#}
+                {#                </form>#}
+
+
+                {% paginate %}
+
+                {#                <div class="pagination">#}
+                {#						<span class="step-links">#}
+                {#							{% if polist_list.has_previous %}#}
+                {#                                <a href="?page={{ polist_list.previous_page_number }}">prev</a>#}
+                {#                            {% else %}#}
+                {#                                <span class='empty'></span>#}
+                {#                            {% endif %}#}
+                {#                            <span class="current">#}
+                {#								Page {{ polist_list.number }} of {{ polist_list.paginator.num_pages }}#}
+                {#							</span>#}
+                {#                            {% if polist_list.has_next %}#}
+                {#                                <a href="?page={{ polist_list.next_page_number }}">next</a>#}
+                {#                            {% else %}#}
+                {#                                <span class='empty'></span>#}
+                {#                            {% endif %}#}
+                {#						</span>#}
+                {#                </div>#}
             </div>
 
 
@@ -111,6 +131,63 @@
 
 {% block jsfile %}
     <script>
+        $("document").ready(function () {
+            $("#selectAll").click(function () {
+                if (this.checked) {
+                    $("input[name='checkbox']").each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    $("input[name='checkbox']").each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
 
+            $("#deletePolicy").click(function () {
+                var obj = document.getElementsByName('checkbox');  //选择所有name="'test'"的对象，返回数组
+                //取到对象数组后，我们来循环检测它是不是被选中
+                var s = '';
+                for (var i = 0; i < obj.length; i++) {
+                    if (obj[i].checked) s += obj[i].value + ',';  //如果选中，将value添加到变量s中
+                }
+                //那么现在来检测s的值就知道选中的复选框的值了
+                if (s == '') {
+                    alert('你还没有选择任何内容！');
+                }
+                else {
+                    if (window.confirm('你确定要删除选中的策略吗？')) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/deletePolicy/",
+                            data: {
+                                policy_ids:s,
+                            },
+                            // dataType: "json",
+                            success: function (data) {
+                                alert(data);
+                                location.reload();
+                            },
+                            error: function (jqXHR) {
+                                alert("发生错误：" + jqXHR.status);
+                            },
+                        });
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+
+            {#            function jqchk() {  //jquery获取复选框值#}
+            {#                var chk_value = [];#}
+            {#                $('input[name="checkbox"]:checked').each(function () {#}
+            {#                    chk_value.push($(this).val());#}
+            {#                });#}
+            {#                alert(chk_value.length == 0 ? '你还没有选择任何内容！' : chk_value);#}
+            {#            }#}
+
+
+        });
     </script>
 {% endblock %}

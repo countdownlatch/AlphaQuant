@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^policy_list/', alphaquant_views.showPolicy_list, name='policy_list'),
     url(r'^createPolicy/$', alphaquant_views.createPolicy, name='createPolicy'),
     url(r'policy/$',alphaquant_views.showPolicy, name='policy'),
+    url(r'deletePolicy/$', alphaquant_views.deletePolicy, name='deletePolicy'),
     url(r'savePolicy/$', alphaquant_views.savePolicy, name='savePolicy'),
     url(r'buildPolicy/$', alphaquant_views.buildPolicy, name='buildPolicy'),
     url(r'getPolicyResult/$',alphaquant_views.getPolicyResult, name='getPolicyResult',),

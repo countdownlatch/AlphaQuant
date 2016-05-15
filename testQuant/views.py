@@ -58,6 +58,15 @@ def createPolicy(request):
     #return render(request, 'policy_list.html',{'newPolicy':policy})
     return HttpResponseRedirect('/policy?id='+(str)(policy.uuid))
 
+def deletePolicy(request):
+    if request.method == 'POST':
+        policy_ids = request.POST.get('policy_ids')
+        policy_ids = policy_ids.split(",")
+        for policy_id in policy_ids:
+            if policy_id:
+                Policy.objects.get(id = policy_id).delete()
+        return  HttpResponse("删除成功")
+
 def savePolicy(request):
     if  request.method == 'POST':
         policy_id = request.POST.get('policy_id')
