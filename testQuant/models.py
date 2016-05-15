@@ -131,3 +131,9 @@ class UserProfile(models.Model):
 #
 #     def __unicode__(self):
 #         return self.name
+
+class Editor(models.Model):
+    fontsize = models.CharField(max_length=10,default='14')
+    theme = models.CharField(max_length=20,default='monokai')
+    wropmode = models.CharField(max_length=10,default='false')
+    user = models.OneToOneField("UserProfile")

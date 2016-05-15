@@ -1,27 +1,25 @@
 /**
  * Created by Jerome on 2016/5/11.
  */
-var editor = ace.edit("policy_editor");
-document.getElementById('policy_editor').style.fontSize = '14px';
-editor.setTheme("ace/theme/monokai");
-editor.getSession().setMode("ace/mode/python");
-editor.getSession().setUseWrapMode(true);  //支持代码折叠
 
-var log_info = ace.edit('policy_log')
-log_info.setTheme("ace/theme/monokai");
-//log_info.getSession().setMode("ace/mode/json.js")
-log_info.setReadOnly(true);
-//log_info.resize();
+
+
+var policy_id = $("#policy_id").val();
+var time = [];
+var stock_price = [];
+var b = [];
+var c = [];
+var log = []
 
 
 $(function () {
 
     $('#policyTitle').bind({
         focus: function () {
-             $(this).css("background-color", '#ffffff');
+            $(this).css("background-color", '#ffffff');
         },
         blur: function () {
-             $(this).css("background-color", '#f2f2f2');
+            $(this).css("background-color", '#f2f2f2');
         }
 
     });
@@ -39,212 +37,185 @@ $(function () {
         forceParse: 0,
         showMeridian: 1,
     });
-     $('.datetimepicker').css("background-color",'#FFFFFF');
+    $('.datetimepicker').css("background-color", '#FFFFFF');
 
 })
-    ;
 
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        var policy_id = $("#policy_id").val();
-        $("#saveBtn").click(function () {
-            var content = editor.getValue();
-            var name = $("#policyTitle").val();
-            $.ajax({
-                type: "POST",
-                url: "/savePolicy/",
-                data: {
-                    content: content,
-                    policy_id: policy_id,
-                    name: name,
-                },
-                success: function (data) {
-                    alert("保存成功");
-                },
-                error: function (jqXHR) {
-                    alert("发生错误：" + jqXHR.status);
-                },
-            });
+
+    $("#buildBtn").click(function () {
+        savePolicy();
+        initValue();
+        var company = $("#company").val();
+        var beginTime = $("#beginTime").val();
+        var endTime = $("#endTime").val();
+        var money = $("#money").val();
+        var rate = $("#rate").val();
+        if (company == "") {
+            alert("公司不能为空");
+            return;
+        }
+        if (money == '') {
+            alert("启动资金不能为空");
+            return;
+        }
+        var parameter = company + ',' + beginTime + ',' + endTime + ',' + money + ',' + rate;
+        $.ajax({
+            type: "POST",
+            url: "/buildPolicy/",
+            data: {
+                policy_id: policy_id,
+                parameter: parameter,
+            },
+            // dataType: "json",
+            success: function (taskId) {
+                alert("编译成功");
+                getPolicyResult(taskId, 1)
+            },
+            error: function (jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            },
         });
+    });
 
-        $("#buildBtn").click(function () {
-            time = [];
-            stock_price = [];
-            b = [];
-            c = [];
-            var company = $("#company").val();
-            var beginTime = $("#beginTime").val();
-            var endTime = $("#endTime").val();
-            var money = $("#money").val();
-            var rate = $("#rate").val();
-            if (company == "") {
-                alert("公司不能为空");
-                return;
-            }
-            if (money == '') {
-                alert("启动资金不能为空");
-                return;
-            }
-            var parameter = company + ',' + beginTime + ',' + endTime + ',' + money + ',' + rate;
-            $.ajax({
-                type: "POST",
-                url: "/buildPolicy/",
-                data: {
-                    policy_id: policy_id,
-                    parameter: parameter,
-                },
-                // dataType: "json",
-                success: function (taskId) {
-                    alert("编译成功");
-                    getPolicyResult(taskId, 1)
-                },
-                error: function (jqXHR) {
-                    alert("发生错误：" + jqXHR.status);
-                },
-            });
+
+    $("#loopbackBtn").click(function () {
+        initValue();
+        var company = $("#company").val();
+        var beginTime = $("#beginTime").val();
+        var endTime = $("#endTime").val();
+        var money = $("#money").val();
+        var rate = $("#rate").val();
+        if (company == "") {
+            alert("公司不能为空");
+            return;
+        }
+        if (money == '') {
+            alert("启动资金不能为空");
+            return;
+        }
+        var parameter = company + ',' + beginTime + ',' + endTime + ',' + money + ',' + rate;
+        $.ajax({
+            type: "POST",
+            url: "/buildPolicy/",
+            data: {
+                policy_id: policy_id,
+                parameter: parameter,
+            },
+            dataType: "json",
+            success: function (task_id) {
+                window.location.href = '../backtestPolicy/?task_id=' + task_id;
+            },
+            error: function (jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            },
         });
-
-
-        $("#loopbackBtn").click(function () {
-            time = [];
-            stock_price = [];
-            b = [];
-            c = [];
-            var company = $("#company").val();
-            var beginTime = $("#beginTime").val();
-            var endTime = $("#endTime").val();
-            var money = $("#money").val();
-            var rate = $("#rate").val();
-            if (company == "") {
-                alert("公司不能为空");
-                return;
-            }
-            if (money == '') {
-                alert("启动资金不能为空");
-                return;
-            }
-
-            var parameter = company + ',' + beginTime + ',' + endTime + ',' + money + ',' + rate;
-            $.ajax({
-                type: "POST",
-                url: "/buildPolicy/",
-                data: {
-                    policy_id: policy_id,
-                    parameter: parameter,
-                },
-                dataType: "json",
-                success: function (task_id) {
-                    window.location.href = '../backtestPolicy/?task_id=' + task_id;
-                },
-                error: function (jqXHR) {
-                    alert("发生错误：" + jqXHR.status);
-                },
-            });
-
-        });
-
 
     });
 
 
-    var time = [];
-    var stock_price = [];
-    var b = [];
-    var c = [];
-    var log = []
+});
 
-    function getPolicyResult(taskId, offset) {
-        $.ajax({
-            type: "POST",
-            url: "/getPolicyResult/",
-            data: {
-                taskId: taskId,
-                offset: offset,
-            },
-            success: function (result) {
-                if (result == 'not exist') {
-                    setTimeout(function () {
-                        getPolicyResult(taskId, offset)
-                    }, 1000);
-                }
-                else {
-                    finish_flag = result.finish_flag;
-                    time = time.concat(result.time);
-                    stock_price = stock_price.concat(result.stock_price);
-                    b = b.concat(result.b);
-                    c = c.concat(result.c);
-                    log = log.concat(result.log)
-                    if (finish_flag != 1) {
-                        offset = offset + 1;
-                        getPolicyResult(taskId, offset)
-                    } else {
+function initValue() {
+    time = [];
+    stock_price = [];
+    b = [];
+    c = [];
+}
 
-                        $('#policy_result_chart').highcharts({                   //图表展示容器，与div的id保持一致
-                            chart: {
-                                type: 'line'                         //指定图表的类型，默认是折线图（line）
-                            },
-                            tooltip: {
-                                crosshairs: true,     //数据显示
-                                shared: true
-                            },
-                            title: {
-                                text: ' Highcharts Demo'      //指定图表标题
-                            },
-                            xAxis: {
-                                categories: time  //指定x轴分组
-                            },
-                            yAxis: {
-                                title: {
-                                    text: 'something'                  //指定y轴的标题
-                                }
-                            },
-                            series: [{                                 //指定数据列
-                                name: '策略收益',                          //数据列名
-                                data: b                   //数据
-                            }, {
-                                name: '基准收益',
-                                data: c
-                            },
-                                /*{
-                                 name: 'stock_price',
-                                 data: a
-                                 }*/]
-                        });
-                        log = (String)(log);
-
-                        log = log.split(",");
-                        var str = '';
-                        for (var i = 0; i < log.length; i++) {
-                            str = str + log[i] + "<br>";
-                        }
-                        $('#policy_log').html((str));
-                        $.ajax({
-                            type: "POST",
-                            url: "/getResultInfo/",
-                            data: {
-                                taskId: taskId,
-                            },
-                            success: function (resultInfo) {
-                                $("#strategy_return").text(resultInfo.strategy_return);
-                                $("#basic_return").text(resultInfo.basic_return);
-                                $("#alpha").text(resultInfo.alpha);
-                                $("#beta").text(resultInfo.beta);
-                                $("#sharp").text(resultInfo.sharp);
-                                $("#maxdown").text(resultInfo.maxdown);
-
-                            },
-                            error: function (jqXHR) {
-                                alert("发生错误：" + jqXHR.status);
-                            },
-
-
-                        });
-
-                    }
-
-                }
+function getPolicyResult(taskId, offset) {
+    $.ajax({
+        type: "POST",
+        url: "/getPolicyResult/",
+        data: {
+            taskId: taskId,
+            offset: offset,
+        },
+        success: function (result) {
+            if (result == 'not exist') {
+                setTimeout(function () {
+                    getPolicyResult(taskId, offset)
+                }, 1000);
             }
-        });
+            else {
+                finish_flag = result.finish_flag;
+                time = time.concat(result.time);
+                stock_price = stock_price.concat(result.stock_price);
+                b = b.concat(result.b);
+                c = c.concat(result.c);
+                log = log.concat(result.log)
+                if (finish_flag != 1) {
+                    offset = offset + 1;
+                    getPolicyResult(taskId, offset)
+                } else {
 
-    }
+                    $('#policy_result_chart').highcharts({                   //图表展示容器，与div的id保持一致
+                        chart: {
+                            type: 'line'                         //指定图表的类型，默认是折线图（line）
+                        },
+                        tooltip: {
+                            crosshairs: true,     //数据显示
+                            shared: true
+                        },
+                        title: {
+                            text: ' Highcharts Demo'      //指定图表标题
+                        },
+                        xAxis: {
+                            categories: time  //指定x轴分组
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'something'                  //指定y轴的标题
+                            }
+                        },
+                        series: [{                                 //指定数据列
+                            name: '策略收益',                          //数据列名
+                            data: b                   //数据
+                        }, {
+                            name: '基准收益',
+                            data: c
+                        },
+                            /*{
+                             name: 'stock_price',
+                             data: a
+                             }*/]
+                    });
+                    log = (String)(log);
+
+                    log = log.split(",");
+                    var str = '';
+                    for (var i = 0; i < log.length; i++) {
+                        str = str + log[i] + "<br>";
+                    }
+                    $('#policy_log').html((str));
+                    $.ajax({
+                        type: "POST",
+                        url: "/getResultInfo/",
+                        data: {
+                            taskId: taskId,
+                        },
+                        success: function (resultInfo) {
+                            $("#strategy_return").text(resultInfo.strategy_return);
+                            $("#basic_return").text(resultInfo.basic_return);
+                            $("#alpha").text(resultInfo.alpha);
+                            $("#beta").text(resultInfo.beta);
+                            $("#sharp").text(resultInfo.sharp);
+                            $("#maxdown").text(resultInfo.maxdown);
+
+                        },
+                        error: function (jqXHR) {
+                            alert("发生错误：" + jqXHR.status);
+                        },
+
+
+                    });
+
+                }
+
+            }
+        }
+    });
+
+}
 

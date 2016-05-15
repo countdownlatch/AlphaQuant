@@ -39,9 +39,15 @@ def showPolicy(request):
     if p_uuid:
         try:
             policy = Policy.objects.get(uuid=p_uuid)
+
         except ObjectDoesNotExist as e:
             return render(request, '404.html', {'err_msg': u'该策略不存在!'})
-    return render(request, 'policy.html',{'policy':policy})
+    try:
+        editor = Editor.objects.get(user_id=request.user.id)
+    except ObjectDoesNotExist as e:
+        editor = Editor(fontsize='14',theme='monokai',wropmode=False,user_id=request.user.id)
+        editor.save()
+    return render(request, 'policy.html',{'policy':policy,'editor':editor})
 
 def createPolicy(request):
     p_uuid = uuid.uuid1()
@@ -157,6 +163,22 @@ def getBacktestInfo(request):
     task = {'company': parameter[0], 'beginTime': parameter[1], 'endTime': parameter[2], 'money': parameter[3],
             "rate": parameter[4],"policy_name":policy_name}
     return JsonResponse(task)
+
+
+def setEditorInfo(request):
+    if request.method == 'POST':
+        fontsize = request.POST.get('fontsize')
+        theme = request.POST.get('theme')
+        wropmode = request.POST.get('wropmode')
+        editor = Editor.objects.get(user_id=request.user.id)
+        if fontsize:
+            editor.fontsize = fontsize
+        if theme:
+            editor.theme = theme
+        if wropmode:
+            editor.wropmode = wropmode
+        editor.save()
+        return HttpResponse()
 
 def community(request,category_id):
     article = Article.objects.filter(category_id = category_id).order_by('-publish_date')
