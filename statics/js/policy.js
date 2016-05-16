@@ -53,7 +53,7 @@ $(document).ready(function () {
 
 
     $("#loopbackBtn").click(function () {
-       editor.commands.exec("loopback", editor);
+        editor.commands.exec("loopback", editor);
     });
 
 });
@@ -64,6 +64,12 @@ function initValue() {
     stock_price = [];
     b = [];
     c = [];
+}
+
+
+function saveTitle() {
+    $("#saveBtn").val("保存");
+    $("#saveBtn").removeAttr('disabled');
 }
 
 function buildPolicy(a) {
@@ -92,11 +98,11 @@ function buildPolicy(a) {
         },
         // dataType: "json",
         success: function (taskId) {
-            if(a == 0){
+            if (a == 0) {
                 getPolicyResult(taskId, 1)
             }
-            else if(a == 1){
-                 window.location.href = '../backtestPolicy/?task_id=' + taskId;
+            else if (a == 1) {
+                window.location.href = '../backtestPolicy/?task_id=' + taskId;
             }
 
         },

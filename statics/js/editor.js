@@ -4,7 +4,6 @@
 var editor = ace.edit("policy_editor");
 $("#policy_editor").css("display", 'block');
 document.getElementById('policy_editor').style.fontSize = $('#editor-fontsize').val() + 'px';
-
 editor.setTheme("ace/theme/" + $('#editor-theme').val());
 editor.getSession().setMode("ace/mode/python");
 if ($('#editor-wropmode').val() == 'true') {
@@ -13,13 +12,20 @@ if ($('#editor-wropmode').val() == 'true') {
 else {
     editor.getSession().setUseWrapMode(false);  //支持代码折叠
 }
-
+//代码提示
+// ace.require("ace/ext/language_tools");
+// editor.setOptions({
+//     enableBasicAutocompletion: true,
+//     enableSnippets: true,
+//     enableLiveAutocompletion: true
+// });
 
 var log_info = ace.edit('policy_ace_log_error')
 document.getElementById('policy_ace_log_error').style.fontSize = $('#editor-fontsize').val() + 'px';
 log_info.setTheme("ace/theme/" + $('#editor-theme').val());
-//log_info.getSession().setMode("ace/mode/json.js")
-log_info.setReadOnly(true);
+log_info.getSession().setMode("ace/mode/logs")
+log_info.setReadOnly(false);
+
 //log_info.resize();
 
 
@@ -32,31 +38,31 @@ $(function () {
 
     $("#font-size-12").click(function () {
         document.getElementById('policy_editor').style.fontSize = '12px';
-         document.getElementById('policy_ace_log_error').style.fontSize = '12px';
+        document.getElementById('policy_ace_log_error').style.fontSize = '12px';
         saveEditor('12', null, null);
     });
 
     $("#font-size-14").click(function () {
         document.getElementById('policy_editor').style.fontSize = '14px';
-         document.getElementById('policy_ace_log_error').style.fontSize = '14px';
+        document.getElementById('policy_ace_log_error').style.fontSize = '14px';
         saveEditor('14', null, null);
     });
 
     $("#font-size-16").click(function () {
         document.getElementById('policy_editor').style.fontSize = '16px';
-         document.getElementById('policy_ace_log_error').style.fontSize = '16px';
+        document.getElementById('policy_ace_log_error').style.fontSize = '16px';
         saveEditor('16', null, null);
     });
 
     $("#theme-monokai").click(function () {
         editor.setTheme("ace/theme/monokai");
-         log_info.setTheme("ace/theme/monokai");
+        log_info.setTheme("ace/theme/monokai");
         saveEditor(null, 'monokai', null);
     });
 
     $("#theme-eclipse").click(function () {
         editor.setTheme("ace/theme/eclipse");
-         log_info.setTheme("ace/theme/eclipse");
+        log_info.setTheme("ace/theme/eclipse");
         saveEditor(null, 'eclipse', null);
     });
 
@@ -124,7 +130,7 @@ $(function () {
             $("#policy-status").addClass("hidden");
             $("#log-loading").removeClass('hidden');
         },
-        readOnly: true
+        readOnly: false
     }]);
 
     editor.commands.addCommands([{
@@ -136,7 +142,7 @@ $(function () {
         exec: function (a) {
             buildPolicy(1);
         },
-        readOnly: true
+        readOnly: false
     }]);
 
     /*$("#findNext").click(function () {
@@ -148,10 +154,13 @@ $(function () {
      editor.findPrevious();
      });*/
 
+
     editor.getSession().on('change', function (e) {
         $("#saveBtn").val("保存");
         $("#saveBtn").removeAttr('disabled');
     });
+
+ 
 
     //设置定时器,每隔5秒自动保存
     setInterval(function () {

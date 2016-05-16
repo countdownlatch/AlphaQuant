@@ -100,7 +100,7 @@
             <div class="col-md-8">
                 <a href="{% url 'policy_list' %}"><span class="glyphicon glyphicon-menu-left " aria-hidden="true"
                                                         style=" margin-top:2px;"></span></a>
-                <input type="text" id="policyTitle" name="title" class="policy_input2 default-font"
+                <input type="text" id="policyTitle" name="title" class="policy_input2 default-font" onchange="saveTitle()"
                        value="{{ policy.name }}"/>
                 <input type="hidden" id="policy_uuid" value="{{ policy.uuid }}"/>
                 <input type="hidden" id="policy_id" value="{{ policy.id }}"/>
@@ -272,10 +272,10 @@ def onBars(self, bars):
                             <a id="daily-error-tab-link" href="#" data-toggle="tab">错误</a>
                         </li>
                     </ul>
-                    <div id="policy_ace_log_error"><div id="log-loading"  class="hidden">
-                            <img src="/static/image/loading.gif" width="30px">
-                        </div>
-                    </div>
+{#                    <div id="log-loading"  class="hidden">#}
+{#                            <img src="/static/image/loading.gif" width="30px">#}
+{#                    </div>#}
+                    <div id="policy_ace_log_error"></div>
                 </div>
             </div>
         </div>
