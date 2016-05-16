@@ -20,11 +20,11 @@ else {
 //     enableLiveAutocompletion: true
 // });
 
-var log_info = ace.edit('policy_ace_log_error')
-document.getElementById('policy_ace_log_error').style.fontSize = $('#editor-fontsize').val() + 'px';
-log_info.setTheme("ace/theme/" + $('#editor-theme').val());
-log_info.getSession().setMode("ace/mode/logs")
-log_info.setReadOnly(false);
+// var log_info = ace.edit('policy_ace_log_error')
+// document.getElementById('policy_ace_log_error').style.fontSize = $('#editor-fontsize').val() + 'px';
+// log_info.setTheme("ace/theme/" + $('#editor-theme').val());
+// // log_info.getSession().setMode("ace/mode/logs")
+// log_info.setReadOnly(true);
 
 //log_info.resize();
 
@@ -38,37 +38,37 @@ $(function () {
 
     $("#font-size-12").click(function () {
         document.getElementById('policy_editor').style.fontSize = '12px';
-        document.getElementById('policy_ace_log_error').style.fontSize = '12px';
+        // document.getElementById('policy_ace_log_error').style.fontSize = '12px';
         saveEditor('12', null, null);
     });
 
     $("#font-size-14").click(function () {
         document.getElementById('policy_editor').style.fontSize = '14px';
-        document.getElementById('policy_ace_log_error').style.fontSize = '14px';
+        // document.getElementById('policy_ace_log_error').style.fontSize = '14px';
         saveEditor('14', null, null);
     });
 
     $("#font-size-16").click(function () {
         document.getElementById('policy_editor').style.fontSize = '16px';
-        document.getElementById('policy_ace_log_error').style.fontSize = '16px';
+        // document.getElementById('policy_ace_log_error').style.fontSize = '16px';
         saveEditor('16', null, null);
     });
 
     $("#theme-monokai").click(function () {
         editor.setTheme("ace/theme/monokai");
-        log_info.setTheme("ace/theme/monokai");
+        // log_info.setTheme("ace/theme/monokai");
         saveEditor(null, 'monokai', null);
     });
 
     $("#theme-eclipse").click(function () {
         editor.setTheme("ace/theme/eclipse");
-        log_info.setTheme("ace/theme/eclipse");
+        // log_info.setTheme("ace/theme/eclipse");
         saveEditor(null, 'eclipse', null);
     });
 
     $("#theme-twilight").click(function () {
         editor.setTheme("ace/theme/twilight");
-        log_info.setTheme("ace/theme/twilight");
+        // log_info.setTheme("ace/theme/twilight");
         saveEditor(null, 'twilight', null);
     });
 

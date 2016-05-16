@@ -177,7 +177,7 @@ function getPolicyResult(taskId, offset) {
                         str = str + log[i] + "<br>";
                     }
                     $("#log-loading").addClass('hidden');
-                    $('#policy_ace_log_error').html((str));
+                    $('#policy_log').html((str));
                     $("#build-loading").addClass('hidden');
                     $("#policy-status").removeClass("hidden");
 
