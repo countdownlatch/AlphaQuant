@@ -30,7 +30,7 @@ editor.commands.addCommand({
 //hljs.initHighlightingOnLoad();
 
 
-var log_info = ace.edit('policy_log')
+var log_info = ace.edit('policy_ace_log_error')
 log_info.setTheme("ace/theme/monokai");
 //log_info.getSession().setMode("ace/mode/json.js")
 log_info.setReadOnly(true);
@@ -114,6 +114,9 @@ $(function () {
         },
         exec: function (a) {
               buildPolicy(0);
+              $("#build-loading").removeClass('hidden');
+              $("#policy-status").addClass("hidden");
+              $("#log-loading").removeClass('hidden');
         },
         readOnly: true
     }]);

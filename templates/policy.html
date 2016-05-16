@@ -176,7 +176,7 @@ def onBars(self, bars):
 
     sma= self.__sma[-1]
     if sma is None:
-    return
+        return
 
     price = bars[self.instrument].getClose()
     shares=self.getBroker().getShares(self.instrument)
@@ -273,13 +273,9 @@ def onBars(self, bars):
                         </li>
                     </ul>
                     <div id="policy_ace_log_error">
-
                         <div id="log-loading"  class="hidden">
                             <img src="/static/image/loading.gif" width="30px">
                         </div>
-
-                        <div id="policy_log"></div>
-                        <div id="policy_error" style="display:none"></div>
                     </div>
                 </div>
             </div>
