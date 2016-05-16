@@ -45,44 +45,16 @@ $(document).ready(function () {
 
 
     $("#buildBtn").click(function () {
-        buildPolicy(0);
+        $("#build-loading").removeClass('hidden');
+        $("#policy-status").addClass("hidden");
+        $("#log-loading").removeClass('hidden');
+        editor.commands.exec("buildPolicy", editor);
     });
 
 
     $("#loopbackBtn").click(function () {
-       buildPolicy(1);
-       /* var company = $("#company").val();
-        var beginTime = $("#beginTime").val();
-        var endTime = $("#endTime").val();
-        var money = $("#money").val();
-        var rate = $("#rate").val();
-        if (company == "") {
-            alert("公司不能为空");
-            return;
-        }
-        if (money == '') {
-            alert("启动资金不能为空");
-            return;
-        }
-        var parameter = company + ',' + beginTime + ',' + endTime + ',' + money + ',' + rate;
-        $.ajax({
-            type: "POST",
-            url: "/buildPolicy/",
-            data: {
-                policy_id: policy_id,
-                parameter: parameter,
-            },
-            dataType: "json",
-            success: function (task_id) {
-                window.location.href = '../backtestPolicy/?task_id=' + task_id;
-            },
-            error: function (jqXHR) {
-                alert("发生错误：" + jqXHR.status);
-            },
-        });*/
-
+       editor.commands.exec("loopback", editor);
     });
-
 
 });
 
@@ -121,7 +93,6 @@ function buildPolicy(a) {
         // dataType: "json",
         success: function (taskId) {
             if(a == 0){
-                alert("编译成功");
                 getPolicyResult(taskId, 1)
             }
             else if(a == 1){
@@ -199,7 +170,11 @@ function getPolicyResult(taskId, offset) {
                     for (var i = 0; i < log.length; i++) {
                         str = str + log[i] + "<br>";
                     }
+                    $("#log-loading").addClass('hidden');
                     $('#policy_log').html((str));
+                    $("#build-loading").addClass('hidden');
+                    $("#policy-status").removeClass("hidden");
+
                     $.ajax({
                         type: "POST",
                         url: "/getResultInfo/",

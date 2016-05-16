@@ -27,6 +27,7 @@
 
         #policy_editor {
             height: 530px;
+            display: none;
         }
 
         #policy_right_top {
@@ -106,10 +107,10 @@
             </div>
             <div class="col-md-4" style=" margin-top: 10px;">
                 <a href="{% url 'community' 1 %}">
-                    <button type="button" class="btn btn-link ">策略库</button>
+                    <button type="button" class="btn btn-link pull-right">策略库>></button>
                 </a>
-                <button class="btn pull-right " type="button">策略</button>
-                <button class="btn pull-right " type="button">回测</button>
+{#                <button class="btn pull-right " type="button">策略</button>#}
+{#                <button class="btn pull-right " type="button">回测</button>#}
             </div>
         </div>
         <div class="row policy_solid" id="policy_content">
@@ -196,7 +197,12 @@ def onBars(self, bars):
                 <div id="policy_right_top" class="row policy_solid" style="background-color: #FFFFE0">
                     <div class="col-md-10">
                         <form class="form-inline">
-                            <div class="form-group">
+                             <div id="build-loading"  class="hidden">
+                                  <span class="default-font ">编译中</span>
+                            <img src="/static/image/loading.gif" width="30px">
+                        </div>
+
+                            <div class="form-group" id="policy-status">
                                 <input type="text" id="company" class="policy_input form-control " style="width: 70px"
                                        value="orcl"/>
 
@@ -267,6 +273,11 @@ def onBars(self, bars):
                         </li>
                     </ul>
                     <div id="policy_ace_log_error">
+
+                        <div id="log-loading"  class="hidden">
+                            <img src="/static/image/loading.gif" width="30px">
+                        </div>
+
                         <div id="policy_log"></div>
                         <div id="policy_error" style="display:none"></div>
                     </div>

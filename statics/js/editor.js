@@ -1,8 +1,8 @@
 /**
  * Created by Jerome on 2016/5/15.
  */
-
 var editor = ace.edit("policy_editor");
+$("#policy_editor").css("display",'block');
 document.getElementById('policy_editor').style.fontSize = $('#editor-fontsize').val() + 'px';
 
 editor.setTheme("ace/theme/" + $('#editor-theme').val());
@@ -86,11 +86,11 @@ $(function () {
 
 
     $("#editor-search").click(function () {
-        editor.commands.exec("find", editor)
+        editor.commands.exec("find", editor);
     });
 
     $("#Keyboard").click(function () {
-        editor.commands.exec("showKeyboardShortcuts", editor)
+        editor.commands.exec("showKeyboardShortcuts", editor);
     });
 
     editor.commands.addCommand({
