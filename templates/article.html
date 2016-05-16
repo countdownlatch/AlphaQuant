@@ -6,7 +6,7 @@
 
 {% block cssfile %}
     <style>
-        .right_userinfo{
+        .right_userinfo {
             margin-top: 50px;
         }
     </style>
@@ -35,7 +35,7 @@
                     {{ comment.content | safe }}
                     <hr>
                 {% endfor %}
-             {% paginate %}
+                {% paginate %}
                 <hr class="featurette-divider">
                 <form action="{% url 'new_comment' article.id %}" method="POST" enctype="multipart/form-data">
                     {#                 {% csrf_token %}#}
@@ -48,12 +48,18 @@
                 <div class="panel panel-default right_userinfo">
                     <div class="panel-body">
                         <p class="text-center">
-                            <img src="/static/head-image/default-head.jpg" alt="head-img" width="130px" height="130px"
-                                 class="img-circle">
+                            {% if userprofile.img_path %}
+                                <img src="{{ userprofile.img_path }}"  alt="head-img" width="128px" height="128px"
+                                class="img-circle">
+                            {% else %}
+                                <img src="/static/head-image/default-head.jpg" alt="head-img" width="128px"
+                                     height="128px"
+                                     class="img-circle">
+                            {% endif %}
+
                         </p>
                         <p class="text-center"><b class="text-warning">{{ request.user.userprofile.name }}</b></p>
                         <p class="text-center text-muted">{{ request.user.userprofile.resume }}</p>
-
                     </div>
 
 
