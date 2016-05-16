@@ -171,10 +171,15 @@ function getPolicyResult(taskId, offset) {
                     });
                     log = (String)(log);
 
-                    log = log.split(",");
+                    logs = log.split(",");
                     var str = '';
-                    for (var i = 0; i < log.length; i++) {
-                        str = str + log[i] + "<br>";
+                    for (var i = 0; i < logs.length; i++) {
+                        log = logs[i].trim();
+                        log = log.split(" ")
+                        log = "<span style='color: #247bac;'>"+" "+log[0]+" "+log[1]+" "+ "</span>"
+                            + "<span style='color: #285628;'>"+log[2]+" "+"</span>"
+                            + "<span style='color: white;'>"+log[3] +"</span>";
+                        str = str + log + "<br>";
                     }
                     $("#log-loading").addClass('hidden');
                     $('#policy_log').html((str));
