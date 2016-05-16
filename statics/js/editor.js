@@ -84,11 +84,51 @@ $(function () {
         savePolicy();
     });
 
+
     $("#editor-search").click(function () {
-        $("#editor-search-input").removeAttr("hidden");
-        var search_word = $("#editor-search-input").val();
-        editor.find(search_word);
+        editor.commands.exec("find", editor)
     });
+
+    $("#Keyboard").click(function () {
+        editor.commands.exec("showKeyboardShortcuts", editor)
+    });
+
+    editor.commands.addCommand({
+        name: "showKeyboardShortcuts",
+        bindKey: {
+            win: "Ctrl-Alt-h",
+            mac: "Command-Alt-h"
+        },
+        exec: function (a) {
+            ace.config.loadModule("ace/ext/keybinding_menu", function (b) {
+                b.init(a);
+                a.showKeyboardShortcuts()
+            })
+        }
+    });
+    editor.commands.addCommands([{
+        name: "buildPolicy",
+        bindKey: {
+            win: "Ctrl-Alt-b",
+            mac: "Command-Alt-b"
+        },
+        exec: function (a) {
+              buildPolicy(0);
+        },
+        readOnly: true
+    }]);
+
+    editor.commands.addCommands([{
+        name: "loopback",
+        bindKey: {
+            win: "Ctrl-Alt-L",
+            mac: "Command-Alt-L"
+        },
+        exec: function (a) {
+              buildPolicy(1);
+        },
+        readOnly: true
+    }]);
 
     /*$("#findNext").click(function () {
      editor.findNext();
@@ -105,16 +145,16 @@ $(function () {
     });
 
     //设置定时器,每隔5秒自动保存
-     setInterval(function () {
-         autosave();
-        }, 5000);
+    setInterval(function () {
+        autosave();
+    }, 5000);
 
 });
 
-function  autosave() {
+function autosave() {
     var saveVal = $("#saveBtn").val();
     if (saveVal == '保存') {
-       savePolicy();
+        savePolicy();
     }
 
 

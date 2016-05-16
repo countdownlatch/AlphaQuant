@@ -122,8 +122,8 @@
                     <div class="col-md-6">
 
                             <div class="dropdown pull-right">
-                                <input type="text" id="editor-search-input" hidden="true" placeholder="关键字" style=" height: 27px;width: 60%;">
-                                 &nbsp;&nbsp;
+{#                                <input type="text" id="editor-search-input" hidden="true" placeholder="关键字" style=" height: 27px;width: 60%;">#}
+{#                                 &nbsp;&nbsp;#}
 {#                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true" id="findNext"></span>#}
 {#                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true" id="findPrev"></span>#}
                                 <span class="glyphicon glyphicon-search " aria-hidden="true" id="editor-search"></span>
@@ -154,6 +154,8 @@
                                     <li id="wropmode-true"><a href="#">代码折叠</a></li>
                                     <li id="wropmode-false"><a href="#">代码不折叠</a></li>
                                     {#                                </div>#}
+                                    <li role="separator" class="divider"></li>
+                                    <li id="Keyboard"><a href="#">显示快捷键列表</a></li>
                                 </ul>
                             </div>
 
@@ -248,8 +250,9 @@ def onBars(self, bars):
                         </div>
                         <div id="policy_result_chart" class="row policy_solid">
                             <div class="defaut_info">
-                                <span>点击”编译运行"进行快速回测</span>
-                                <span>或者 点击"运行回测"进行详细的回测</span>
+                                <span>点击”编译运行"进行快速回测(Ctrl-Alt-B)</span>
+                                <br>
+                                <span>或者 点击"运行回测"进行详细的回测(Ctrl-Alt-L)</span>
                             </div>
                         </div>
                     </div>
