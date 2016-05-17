@@ -13,12 +13,12 @@ else {
     editor.getSession().setUseWrapMode(false);  //支持代码折叠
 }
 //代码提示
-// ace.require("ace/ext/language_tools");
-// editor.setOptions({
-//     enableBasicAutocompletion: true,
-//     enableSnippets: true,
-//     enableLiveAutocompletion: true
-// });
+ace.require("ace/ext/language_tools");
+editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: true
+});
 
 // var log_info = ace.edit('policy_ace_log_error')
 // document.getElementById('policy_ace_log_error').style.fontSize = $('#editor-fontsize').val() + 'px';
