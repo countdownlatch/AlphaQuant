@@ -38,7 +38,7 @@
                 {% paginate %}
                 <hr class="featurette-divider">
                 <form action="{% url 'new_comment' article.id %}" method="POST" enctype="multipart/form-data">
-                    {#                 {% csrf_token %}#}
+                                     {% csrf_token %}
                     <textarea id='comment_editor' name="comment_content" class="form-control" rows="3"></textarea>
                     <br>
                     <button type="submit" class="btn btn-primary pull-right">发表评论</button>

@@ -36,7 +36,7 @@
                 <div class="row" id='account-info'>
                     <div class="col-md-3">
                         <form action="{% url 'upload_head_img' %}" method="post" enctype="multipart/form-data">
-                            {#                    {% csrf_token %}#}
+                                                {% csrf_token %}
 
                             <div>
                                 {% if userInfo.img_path %}

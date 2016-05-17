@@ -196,7 +196,7 @@ def onBars(self, bars):
             <div class="col-md-7" id="policy_right">
                 <div id="policy_right_top" class="row policy_solid" style="background-color: #FFFFE0">
                     <div class="col-md-10">
-                        <form class="form-inline">
+                        <form class="form-inline"> {% csrf_token %}
                              <div id="build-loading"  class="hidden">
                                   <span class="default-font ">编译中</span>
                             <img src="/static/image/loading.gif" width="30px">

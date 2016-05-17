@@ -22,17 +22,7 @@ def showPolicy_list(request):
     if request.user.is_authenticated():
         author = request.user.userprofile.id
         policy_list = Policy.objects.filter(author_id=author).order_by('-update_time')
-        # django 自带的分页，已替换为django-pagination来实现
-        # paginator = Paginator(policy_list, 10)
-        # page = request.GET.get('page')
-        # try:
-        #     policy_list = paginator.page(page)
-        # except PageNotAnInteger:
-        #     # If page is not an integer, deliver first page.
-        #     policy_list = paginator.page(1)
-        # except EmptyPage:
-        #     # If page is out of range (e.g. 9999), deliver last page of results.
-        #     policy_list = paginator.page(paginator.num_pages)
+
         return render(request, 'policy_list.html', {'polist_list': policy_list})
     else:
         return HttpResponseRedirect('/login/')

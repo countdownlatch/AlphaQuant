@@ -18,7 +18,7 @@
         <h2>编辑主题</h2>
         <br><br>
         <form action="{% url 'new_article' %}" method="POST"  enctype="multipart/form-data">
-{#            {% csrf_token %}#}
+            {% csrf_token %}
         <h4>标题</h4>
             <div class="row">
                 <div class="col-md-2">

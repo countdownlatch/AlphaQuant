@@ -119,7 +119,7 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=32)
     wechat = models.CharField(max_length=255,null=True,blank=True)
     resume = models.CharField(max_length=255,default="这个家伙很懒，什么都没留下")
-    img_path = models.CharField(max_length=128,null=True,blank=True)
+    img_path = models.CharField(max_length=128,default='/static/head-image/default.jpg')
    # friends = models.ManyToManyField("self",blank=True)
    # online = models.BooleanField(default=False)
 
