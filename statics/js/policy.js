@@ -138,6 +138,12 @@ function getPolicyResult(taskId, offset) {
                     getPolicyResult(taskId, offset)
                 } else {
 
+                    var y1 = $("#beginTime").val().split("-")[0];
+                    var m1 = $("#beginTime").val().split("-")[1];
+                    var y2 = $("#endTime").val().split('-')[0];
+                    var m2 = $("#endTime").val().split('-')[1];
+                    var tickInterval = 3*(12*(y2-y1) +(m2-m1));
+
                     $('#policy_result_chart').highcharts({                   //图表展示容器，与div的id保持一致
                         chart: {
                             type: 'line'                         //指定图表的类型，默认是折线图（line）
@@ -151,7 +157,7 @@ function getPolicyResult(taskId, offset) {
                         },
                         xAxis: {
                             categories: time,  //指定x轴分组
-                            tickInterval: 150,
+                            tickInterval: tickInterval,
                         },
                         yAxis: [{
 
