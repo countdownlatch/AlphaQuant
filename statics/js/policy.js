@@ -150,24 +150,30 @@ function getPolicyResult(taskId, offset) {
                             text: ' Highcharts Demo'      //指定图表标题
                         },
                         xAxis: {
-                            categories: time  //指定x轴分组
+                            categories: time,  //指定x轴分组
+                            tickInterval: 150,
                         },
-                        yAxis: {
-                            title: {
-                                text: 'something'                  //指定y轴的标题
-                            }
+                        yAxis: [{
+
                         },
-                        series: [{                                 //指定数据列
+                        {
+
+                        }],
+
+                        series: [{
+                            yAxis:0,//指定数据列
                             name: '策略收益',                          //数据列名
-                            data: b                   //数据
+                            data: b  ,                 //数据
                         }, {
+                            yAxis:0,
                             name: '基准收益',
                             data: c
                         },
-                            /*{
-                             name: 'stock_price',
-                             data: a
-                             }*/]
+                            {
+                                yAxis:1,
+                                name: 'stock_price',
+                                data: stock_price
+                             }]
                     });
                     log = (String)(log);
 
