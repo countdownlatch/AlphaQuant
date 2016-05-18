@@ -112,6 +112,30 @@ function buildPolicy(a) {
     });
 }
 
+function getYaisData(data) {
+    var yData = data;
+    var bb =[];
+    for(var i = 0; i < yData.length; i++){
+
+        var y;
+        var m;
+        var day;
+        var aa = yData[i].split(" ");
+        //var cc = aa[0].replace(new RegExp(/(-)/g),',');
+        var dd = aa[0].split('-');
+        for(var j = 0; j < dd.length;j++ ){
+            y = Number(dd[0]);
+            m = Number(dd[1]);
+            day = Number(dd[2]);
+        }
+        var date = Date.UTC(y,m,day);
+        //console.log(date);
+        bb.push([date,Number(aa[1])]);
+    }
+     //console.log(bb);
+    return bb;
+}
+
 function getPolicyResult(taskId, offset) {
     $.ajax({
         type: "POST",
@@ -128,17 +152,100 @@ function getPolicyResult(taskId, offset) {
             }
             else {
                 finish_flag = result.finish_flag;
-                time = time.concat(result.time);
-                stock_price = stock_price.concat(result.stock_price);
-                b = b.concat(result.b);
-                c = c.concat(result.c);
+               // time = time.concat(result.time);
+                //stock_price = getYaisData(result.stock_price);
+                b = b.concat(getYaisData(result.b));
+                c = c.concat(getYaisData(result.c));
                 log = log.concat(result.log)
                 if (finish_flag != 1) {
                     offset = offset + 1;
                     getPolicyResult(taskId, offset)
                 } else {
 
-                    var y1 = $("#beginTime").val().split("-")[0];
+
+                    var chart = new Highcharts.StockChart({
+	    chart: {
+	        renderTo: 'policy_result_chart'//指向的div的id属性
+	    },
+	    exporting: {
+            enabled: true //是否能导出趋势图图片
+        },
+		title : {
+				text : 'Stock price'//图表标题
+			},
+	    xAxis: {
+            gridLineWidth: 1,
+            gridLineColor: "lightgray",
+            categories: time,
+            type: "datetime",
+            tickPixelInterval: 120,
+            labels: {
+                style: {
+                    fontSize: "10px"
+                },
+                formatter: function () {
+                    return Highcharts.dateFormat("%y-%m-%d", this.value)
+                }
+            }
+	    },
+	    yAxis : {
+
+              title: {
+                  text: '收益率(%)'  //y轴上的标题
+              }
+         },
+		tooltip: {
+            xDateFormat: '%Y-%m-%d, %A'//鼠标移动到趋势线上时显示的日期格式
+        },
+	    rangeSelector: {
+			buttons: [{//定义一组buttons,下标从0开始
+			type: 'week',
+			count: 1,
+			text: '1w'
+		},{
+			type: 'month',
+			count: 1,
+			text: '1m'
+		}, {
+			type: 'month',
+			count: 3,
+			text: '3m'
+		}, {
+			type: 'month',
+			count: 6,
+			text: '6m'
+		}, {
+			type: 'ytd',
+			text: 'YTD'
+		}, {
+			type: 'year',
+			count: 1,
+			text: '1y'
+		}, {
+			type: 'all',
+			text: 'All'
+		}],
+			selected: 1//表示以上定义button的index,从0开始
+	    },
+
+	    series: [{
+	        name: '策略收益',//鼠标移到趋势线上时显示的属性名
+	        data: b,//属性值
+			//marker : {
+			//		enabled : true,
+			//		radius : 3
+			//	},
+			//shadow : true
+	    },{
+
+                            name: '基准收益',
+                            data: c
+                        },
+                            ]
+
+	});
+
+                    /*var y1 = $("#beginTime").val().split("-")[0];
                     var m1 = $("#beginTime").val().split("-")[1];
                     var y2 = $("#endTime").val().split('-')[0];
                     var m2 = $("#endTime").val().split('-')[1];
@@ -180,7 +287,7 @@ function getPolicyResult(taskId, offset) {
                                 name: 'stock_price',
                                 data: stock_price
                              }]
-                    });
+                    });*/
                     log = (String)(log);
 
                     logs = log.split(",");

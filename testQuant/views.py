@@ -128,13 +128,13 @@ def getChartResult(task_id, offset):
     length = len(content)
 
     for lt in range(length):
-        time.append(content[lt]['time'])
+        time=content[lt]['time']
         tmp = content[lt]['content']
-        stock_price.append(tmp[0])
-        b.append(tmp[1])
-        c.append(tmp[2])
-    result = {'time': time, 'stock_price': stock_price, "b": b, "c": c, 'finish_flag': finish_flag}
-
+        stock_price.append(time+" "+(str)(tmp[0]))
+        b.append(time+" "+(str)(tmp[1]))
+        c.append(time+" "+(str)(tmp[2]))
+    result = {'stock_price': stock_price, "b": b, "c": c, 'finish_flag': finish_flag}
+    #print result["b"]
     return result
 
 
