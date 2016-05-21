@@ -1,23 +1,60 @@
 /**
  * Created by Jerome on 2016/5/15.
  */
+//将特定的区域的编辑器区
 var editor = ace.edit("policy_editor");
-$("#policy_editor").css("display", 'block');
+//设置编辑器的字体大小
 document.getElementById('policy_editor').style.fontSize = $('#editor-fontsize').val() + 'px';
-editor.setTheme("ace/theme/" + $('#editor-theme').val());
+//设置渲染的语言模式为python
 editor.getSession().setMode("ace/mode/python");
+//设置编辑器的主题
+editor.setTheme("ace/theme/" + $('#editor-theme').val());
+//控制代码折叠
 if ($('#editor-wropmode').val() == 'true') {
     editor.getSession().setUseWrapMode(true);  //支持代码折叠
 }
 else {
     editor.getSession().setUseWrapMode(false);  //支持代码折叠
 }
+//ace渲染完成后再进行显示
+$("#policy_editor").css("display", 'block');
+
 //代码提示
-ace.require("ace/ext/language_tools");
+
 editor.setOptions({
     enableBasicAutocompletion: true,
     enableSnippets: true,
     enableLiveAutocompletion: true
+});
+var codeprompt = ace.require("ace/ext/language_tools");
+codeprompt.addCompleter({
+    getCompletions: function (editor, session, pos, prefix, callback) {
+        callback(null, [
+            {
+                name: "initialize",  //名称
+                value: "initialize", //值
+                caption: "initialize",//展示在列表中的内容
+                meta: "function",//展示类型
+                type: "local",
+                score: 1000 // 让initialize排在最上面
+            }
+        ]);
+    }
+});
+//自定义补全规则
+codeprompt.addCompleter({
+    getCompletions: function (editor, session, pos, prefix, callback) {
+        callback(null, [
+            {
+                name: "onBars",
+                value: "onBars",
+                caption: "onBars",
+                meta: "function",
+                type: "local",
+                score: 1000 // 让test排在最上面
+            }
+        ]);
+    }
 });
 
 // var log_info = ace.edit('policy_ace_log_error')
@@ -34,7 +71,6 @@ editor.setOptions({
 
 
 $(function () {
-
 
     $("#font-size-12").click(function () {
         document.getElementById('policy_editor').style.fontSize = '12px';
@@ -119,7 +155,7 @@ $(function () {
         }
     });
     editor.commands.addCommands([{
-        name: "buildPolicy",
+        name: "编译运行",
         bindKey: {
             win: "Ctrl-Alt-b",
             mac: "Command-Alt-b"
@@ -134,15 +170,15 @@ $(function () {
     }]);
 
     editor.commands.addCommands([{
-        name: "loopback",
+        name: "运行回测",  //快捷键的名字
         bindKey: {
-            win: "Ctrl-Alt-L",
+            win: "Ctrl-Alt-L",  //绑定的快捷键，windows和osx系统
             mac: "Command-Alt-L"
         },
         exec: function (a) {
-            buildPolicy(1);
+            buildPolicy(1);  //快捷键绑定的方法
         },
-        readOnly: false
+        readOnly: false   //不使用只读模式
     }]);
 
     /*$("#findNext").click(function () {
@@ -160,7 +196,6 @@ $(function () {
         $("#saveBtn").removeAttr('disabled');
     });
 
- 
 
     //设置定时器,每隔5秒自动保存
     setInterval(function () {

@@ -48,12 +48,12 @@ $(document).ready(function () {
         $("#build-loading").removeClass('hidden');
         $("#policy-status").addClass("hidden");
         $("#log-loading").removeClass('hidden');
-        editor.commands.exec("buildPolicy", editor);
+        editor.commands.exec("编译运行", editor);
     });
 
 
     $("#loopbackBtn").click(function () {
-        editor.commands.exec("loopback", editor);
+        editor.commands.exec("运行回测", editor);
     });
 
 });
