@@ -51,7 +51,7 @@ codeprompt.addCompleter({
                 caption: "onBars",
                 meta: "function",
                 type: "local",
-                score: 1000 // 让test排在最上面
+                score: 1000 // 让onBars排在最上面
             }
         ]);
     }
@@ -190,12 +190,11 @@ $(function () {
      editor.findPrevious();
      });*/
 
-
+    //监听编辑器的变化
     editor.getSession().on('change', function (e) {
         $("#saveBtn").val("保存");
         $("#saveBtn").removeAttr('disabled');
     });
-
 
     //设置定时器,每隔5秒自动保存
     setInterval(function () {

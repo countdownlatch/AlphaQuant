@@ -114,8 +114,8 @@ function buildPolicy(a) {
 
 function getYaisData(data) {
     var yData = data;
-    var bb =[];
-    for(var i = 0; i < yData.length; i++){
+    var bb = [];
+    for (var i = 0; i < yData.length; i++) {
 
         var y;
         var m;
@@ -123,16 +123,16 @@ function getYaisData(data) {
         var aa = yData[i].split(" ");
         //var cc = aa[0].replace(new RegExp(/(-)/g),',');
         var dd = aa[0].split('-');
-        for(var j = 0; j < dd.length;j++ ){
+        for (var j = 0; j < dd.length; j++) {
             y = Number(dd[0]);
             m = Number(dd[1]);
             day = Number(dd[2]);
         }
-        var date = Date.UTC(y,m,day);
+        var date = Date.UTC(y, m, day);
         //console.log(date);
-        bb.push([date,Number(aa[1])]);
+        bb.push([date, Number(aa[1])]);
     }
-     //console.log(bb);
+    //console.log(bb);
     return bb;
 }
 
@@ -152,7 +152,7 @@ function getPolicyResult(taskId, offset) {
             }
             else {
                 finish_flag = result.finish_flag;
-               // time = time.concat(result.time);
+                // time = time.concat(result.time);
                 //stock_price = getYaisData(result.stock_price);
                 b = b.concat(getYaisData(result.b));
                 c = c.concat(getYaisData(result.c));
@@ -164,130 +164,130 @@ function getPolicyResult(taskId, offset) {
 
 
                     var chart = new Highcharts.StockChart({
-	    chart: {
-	        renderTo: 'policy_result_chart'//指向的div的id属性
-	    },
-	    exporting: {
-            enabled: true //是否能导出趋势图图片
-        },
-		title : {
-				text : 'Stock price'//图表标题
-			},
-	    xAxis: {
-            gridLineWidth: 1,
-            gridLineColor: "lightgray",
-            categories: time,
-            type: "datetime",
-            tickPixelInterval: 120,
-            labels: {
-                style: {
-                    fontSize: "10px"
-                },
-                formatter: function () {
-                    return Highcharts.dateFormat("%y-%m-%d", this.value)
-                }
-            }
-	    },
-	    yAxis : {
-
-              title: {
-                  text: '收益率(%)'  //y轴上的标题
-              }
-         },
-		tooltip: {
-            xDateFormat: '%Y-%m-%d, %A'//鼠标移动到趋势线上时显示的日期格式
-        },
-	    rangeSelector: {
-			buttons: [{//定义一组buttons,下标从0开始
-			type: 'week',
-			count: 1,
-			text: '1w'
-		},{
-			type: 'month',
-			count: 1,
-			text: '1m'
-		}, {
-			type: 'month',
-			count: 3,
-			text: '3m'
-		}, {
-			type: 'month',
-			count: 6,
-			text: '6m'
-		}, {
-			type: 'ytd',
-			text: 'YTD'
-		}, {
-			type: 'year',
-			count: 1,
-			text: '1y'
-		}, {
-			type: 'all',
-			text: 'All'
-		}],
-			selected: 1//表示以上定义button的index,从0开始
-	    },
-
-	    series: [{
-	        name: '策略收益',//鼠标移到趋势线上时显示的属性名
-	        data: b,//属性值
-			//marker : {
-			//		enabled : true,
-			//		radius : 3
-			//	},
-			//shadow : true
-	    },{
-
-                            name: '基准收益',
-                            data: c
-                        },
-                            ]
-
-	});
-
-                    /*var y1 = $("#beginTime").val().split("-")[0];
-                    var m1 = $("#beginTime").val().split("-")[1];
-                    var y2 = $("#endTime").val().split('-')[0];
-                    var m2 = $("#endTime").val().split('-')[1];
-                    var tickInterval = 3*(12*(y2-y1) +(m2-m1));
-
-                    $('#policy_result_chart').highcharts({                   //图表展示容器，与div的id保持一致
                         chart: {
-                            type: 'line'                         //指定图表的类型，默认是折线图（line）
+                            renderTo: 'policy_result_chart'//指向的div的id属性
                         },
-                        tooltip: {
-                            crosshairs: true,     //数据显示
-                            shared: true
+                        exporting: {
+                            enabled: true //是否能导出趋势图图片
                         },
                         title: {
-                            text: ' Highcharts Demo'      //指定图表标题
+                            text: 'Stock price'//图表标题
                         },
                         xAxis: {
-                            categories: time,  //指定x轴分组
-                            tickInterval: tickInterval,
+                            gridLineWidth: 1,
+                            gridLineColor: "lightgray",
+                            categories: time,
+                            type: "datetime",
+                            tickPixelInterval: 120,
+                            labels: {
+                                style: {
+                                    fontSize: "10px"
+                                },
+                                formatter: function () {
+                                    return Highcharts.dateFormat("%y-%m-%d", this.value)
+                                }
+                            }
                         },
-                        yAxis: [{
+                        yAxis: {
 
+                            title: {
+                                text: '收益率(%)'  //y轴上的标题
+                            }
                         },
-                        {
-
-                        }],
+                        tooltip: {
+                            xDateFormat: '%Y-%m-%d, %A'//鼠标移动到趋势线上时显示的日期格式
+                        },
+                        rangeSelector: {
+                            buttons: [{//定义一组buttons,下标从0开始
+                                type: 'week',
+                                count: 1,
+                                text: '1w'
+                            }, {
+                                type: 'month',
+                                count: 1,
+                                text: '1m'
+                            }, {
+                                type: 'month',
+                                count: 3,
+                                text: '3m'
+                            }, {
+                                type: 'month',
+                                count: 6,
+                                text: '6m'
+                            }, {
+                                type: 'ytd',
+                                text: 'YTD'
+                            }, {
+                                type: 'year',
+                                count: 1,
+                                text: '1y'
+                            }, {
+                                type: 'all',
+                                text: 'All'
+                            }],
+                            selected: 1//表示以上定义button的index,从0开始
+                        },
 
                         series: [{
-                            yAxis:0,//指定数据列
-                            name: '策略收益',                          //数据列名
-                            data: b  ,                 //数据
+                            name: '策略收益',//鼠标移到趋势线上时显示的属性名
+                            data: b,//属性值
+                            //marker : {
+                            //		enabled : true,
+                            //		radius : 3
+                            //	},
+                            //shadow : true
                         }, {
-                            yAxis:0,
+
                             name: '基准收益',
                             data: c
                         },
-                            {
-                                yAxis:1,
-                                name: 'stock_price',
-                                data: stock_price
-                             }]
-                    });*/
+                        ]
+
+                    });
+
+                    /*var y1 = $("#beginTime").val().split("-")[0];
+                     var m1 = $("#beginTime").val().split("-")[1];
+                     var y2 = $("#endTime").val().split('-')[0];
+                     var m2 = $("#endTime").val().split('-')[1];
+                     var tickInterval = 3*(12*(y2-y1) +(m2-m1));
+
+                     $('#policy_result_chart').highcharts({                   //图表展示容器，与div的id保持一致
+                     chart: {
+                     type: 'line'                         //指定图表的类型，默认是折线图（line）
+                     },
+                     tooltip: {
+                     crosshairs: true,     //数据显示
+                     shared: true
+                     },
+                     title: {
+                     text: ' Highcharts Demo'      //指定图表标题
+                     },
+                     xAxis: {
+                     categories: time,  //指定x轴分组
+                     tickInterval: tickInterval,
+                     },
+                     yAxis: [{
+
+                     },
+                     {
+
+                     }],
+
+                     series: [{
+                     yAxis:0,//指定数据列
+                     name: '策略收益',                          //数据列名
+                     data: b  ,                 //数据
+                     }, {
+                     yAxis:0,
+                     name: '基准收益',
+                     data: c
+                     },
+                     {
+                     yAxis:1,
+                     name: 'stock_price',
+                     data: stock_price
+                     }]
+                     });*/
                     log = (String)(log);
 
                     logs = log.split(",");
@@ -295,9 +295,9 @@ function getPolicyResult(taskId, offset) {
                     for (var i = 0; i < logs.length; i++) {
                         log = logs[i].trim();
                         log = log.split(" ")
-                        log = "<span style='color: #247bac;'>"+" "+log[0]+" "+log[1]+" "+ "</span>"
-                            + "<span style='color: #285628;'>"+log[2]+" "+"</span>"
-                            + "<span style='color: white;'>"+log[3] +"</span>";
+                        log = "<span style='color: #247bac;'>" + " " + log[0] + " " + log[1] + " " + "</span>"
+                            + "<span style='color: #285628;'>" + log[2] + " " + "</span>"
+                            + "<span style='color: white;'>" + log[3] + "</span>";
                         str = str + log + "<br>";
                     }
                     $("#log-loading").addClass('hidden');
